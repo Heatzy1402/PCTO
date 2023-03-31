@@ -4,7 +4,7 @@ import random
 pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
-#ciao ciao ciao
+#ciao ciao ciao ciao ciao
 WIDTH = infoObject.current_w 
 HEIGHT = infoObject.current_h- 50
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))

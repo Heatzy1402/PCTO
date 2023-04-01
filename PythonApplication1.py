@@ -28,7 +28,7 @@ FONT = pygame.font.SysFont("comicsans", 30)
 
 def draw(player, elapsed_time, stars,point,stop, gamestarter):
     WIN.blit(BG, (0, 0))
-    WIN.blit(pan,(player.x,player.y))
+    WIN.blit(pan,(player.x,player.y-200))
     time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
     WIN.blit(time_text, (10, 10))
     point_text = FONT.render(f"Points: {round(point)}", 1, "white")
@@ -60,7 +60,7 @@ def draw(player, elapsed_time, stars,point,stop, gamestarter):
 def main():
     gamestarter = False
     run = True
-    stop= 10
+    stop= 40
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     
     

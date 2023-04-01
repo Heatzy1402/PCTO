@@ -9,26 +9,28 @@ WIDTH = infoObject.current_w
 HEIGHT = infoObject.current_h- 50
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
-#WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-
-BG = pygame.transform.scale(pygame.image.load("bg.jpeg"), (WIDTH, HEIGHT))
-BG1 = pygame.transform.scale(pygame.image.load("bg1.jpeg"), (WIDTH, HEIGHT))
-ful = pygame.transform.scale(pygame.image.load("ful1.jpeg"), (200, 200))
-pan = pygame.transform.scale(pygame.image.load("pannello.png"), (200, 300))
-st = pygame.transform.scale(pygame.image.load("start.jpeg"), (WIDTH, HEIGHT))
-PLAYER_WIDTH = 100
-PLAYER_HEIGHT = 120
+WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+PLAYER_WIDTH = 80
+PLAYER_HEIGHT = 100
 PLAYER_VEL = 5
 STAR_WIDTH = 80
 STAR_HEIGHT = 70
 STAR_VEL = 3
-
 FONT = pygame.font.SysFont("comicsans", 30)
+
+BG = pygame.transform.scale(pygame.image.load("bg.jpeg"), (WIDTH, HEIGHT))
+BG1 = pygame.transform.scale(pygame.image.load("bg1.jpeg"), (WIDTH, HEIGHT))
+ful = pygame.transform.scale(pygame.image.load("ful1.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
+pan = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
+st = pygame.transform.scale(pygame.image.load("start.jpeg"), (WIDTH, HEIGHT))
+
+
+
 
 
 def draw(player, elapsed_time, stars,point,stop, gamestarter):
     WIN.blit(BG, (0, 0))
-    WIN.blit(pan,(player.x,player.y-200))
+    WIN.blit(pan,(player.x,player.y))
     time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
     WIN.blit(time_text, (10, 10))
     point_text = FONT.render(f"Points: {round(point)}", 1, "white")
@@ -60,7 +62,7 @@ def draw(player, elapsed_time, stars,point,stop, gamestarter):
 def main():
     gamestarter = False
     run = True
-    stop= 40
+    stop= 60
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     
     

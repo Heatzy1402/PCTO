@@ -1,3 +1,4 @@
+from turtle import delay
 import pygame
 import time
 import random
@@ -12,7 +13,7 @@ pygame.display.set_caption("Minigames")
 #WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 PLAYER_WIDTH = 80
 PLAYER_HEIGHT = 100
-PLAYER_VEL = 8
+PLAYER_VEL = 6
 STAR_WIDTH = 80
 STAR_HEIGHT = 70
 STAR_VEL = 3
@@ -94,7 +95,7 @@ def main():
                 star.y += STAR_VEL
                 if star.y > HEIGHT-50:
                     stars.remove(star)
-                elif star.y + star.height >= player.y and star.colliderect(player) :
+                elif  star.colliderect(player) : #star.y + star.height >= player.y and
                     stars.remove(star)
                     point=point+1
                 
@@ -103,8 +104,9 @@ def main():
             if star_count > star_add_increment:
                 for _ in range(3):
                     star_x = new_func4()
-                    star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
-                    stars.append(star)                   
+                    star = new_func5(star_x)
+                    stars.append(star) 
+                    
                     
 
                 star_add_increment = max(100, star_add_increment - 1)
@@ -115,7 +117,7 @@ def main():
 
 
 
-            keys = pygame.key.get_pressed()
+            keys = new_func2()
             if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
@@ -134,6 +136,10 @@ def main():
         draw(player, elapsed_time, stars, point,stop, gamestarter)
 
     pygame.quit()
+
+def new_func5(star_x):
+    star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
+    return star
 
 def new_func4():
     star_x = random.randint(0, WIDTH - STAR_WIDTH)

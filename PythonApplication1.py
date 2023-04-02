@@ -4,12 +4,12 @@ import random
 pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
-#ciao ciao ciao ciao ciao prova
+
 WIDTH = infoObject.current_w 
-HEIGHT = infoObject.current_h- 50
+HEIGHT = infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
-WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+#WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 PLAYER_WIDTH = 80
 PLAYER_HEIGHT = 100
 PLAYER_VEL = 5

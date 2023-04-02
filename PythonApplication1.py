@@ -80,7 +80,7 @@ def main():
         
         star_count += clock.tick(60)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_BACKSPACE] and vab == True :         #Tasto per far partire il gioco    
+        if keys[pygame.K_SPACE] and vab == True :         #Tasto per far partire il gioco    
           gamestarter = True
           vab = False  
           start_time=time.time()

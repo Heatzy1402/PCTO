@@ -1,4 +1,3 @@
-from turtle import delay
 import pygame
 import time
 import random
@@ -105,7 +104,8 @@ def main():
                 for _ in range(3):
                     star_x = new_func4()
                     star = new_func5(star_x)
-                    stars.append(star) 
+                    stars.append(star)
+                    
                     
                     
 
@@ -139,6 +139,7 @@ def main():
 
 def new_func5(star_x):
     star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
+    pygame.time.delay(250)
     return star
 
 def new_func4():

@@ -139,7 +139,7 @@ def main():
 
 def new_func5(star_x):
     star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
-    pygame.time.delay(250)
+    #pygame.time.delay(250)
     return star
 
 def new_func4():

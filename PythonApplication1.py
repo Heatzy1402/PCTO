@@ -43,6 +43,8 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
         WIN.blit(finish_text, (0, 0))                
     if gamestarter == False :
         WIN.blit(st, (0,0)) 
+    for star in stars:
+        WIN.blit(ful,(star.x,star.y))
     pygame.display.update() 
 
 
@@ -65,9 +67,8 @@ def main():
     run = True
     vab = True
     stop = 10
-    star_add_increment = 2000
+    
     point = 0
-    star_count = 0
     start_time=0
     stars = []
     clock = new_func1() 
@@ -95,7 +96,7 @@ def main():
             start_time = new_func3()
         elapsed_time = time.time() - start_time
         
-        gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increment,player,point)
+        gioco_1(clock,gamestarter,elapsed_time,stop,stars,player,point)
         draw(player, elapsed_time, stars, point,stop, gamestarter)
 
     pygame.quit()
@@ -135,13 +136,14 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
-def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increment,player,point):
-    
+def gioco_1(clock,gamestarter,elapsed_time,stop,stars,player,point):
+    star_count = 0
+    star_add_increment= 2000
     star_count += clock.tick(60)
     
         
     
-    if  gamestarter == True: #and elapsed_time < stop:    
+    if  gamestarter == True and elapsed_time < stop:    
             for star in stars[:]:
                 star.y += STAR_VEL
                 if star.y > HEIGHT-50:
@@ -157,12 +159,12 @@ def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increm
                     star_x = new_func4()
                     star = new_func5(star_x)
                     stars.append(star)
-                    
-                    
+                star_add_increment = max(100, star_add_increment - 1)      
+                star_count = 0      
                     
 
-                star_add_increment = max(100, star_add_increment - 1)
-                star_count = 0
+            
+                    
             
             
 
@@ -174,7 +176,7 @@ def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increm
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
-            
+            draw(player, elapsed_time, stars, point,stop, gamestarter)
 
 
 

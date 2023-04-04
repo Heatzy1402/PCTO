@@ -67,19 +67,20 @@ def main():
     run = True
     vab = True
     stop = 10
-    
+    star_count=0
     point = 0
     start_time=0
     stars = []
     clock = new_func1() 
     player = new_func()
-    
-    
+    star_add_increment= 2000
+    a=0
     
     
     
 
     while run:
+        star_count += clock.tick(60)
         
         for event in pygame.event.get():    
                 if event.type == pygame.QUIT:
@@ -96,7 +97,7 @@ def main():
             start_time = new_func3()
         elapsed_time = time.time() - start_time
         
-        gioco_1(clock,gamestarter,elapsed_time,stop,stars,player,point)
+        gioco_1(gamestarter,elapsed_time,stop,stars,player,point,star_count,star_add_increment,a)
         draw(player, elapsed_time, stars, point,stop, gamestarter)
 
     pygame.quit()
@@ -136,10 +137,10 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
-def gioco_1(clock,gamestarter,elapsed_time,stop,stars,player,point):
-    star_count = 0
-    star_add_increment= 2000
-    star_count += clock.tick(60)
+def gioco_1(gamestarter,elapsed_time,stop,stars,player,point,star_count,star_add_increment,a):
+    
+    
+    
     
         
     
@@ -154,13 +155,12 @@ def gioco_1(clock,gamestarter,elapsed_time,stop,stars,player,point):
                 
                     break    
             
-            if star_count > star_add_increment:
+            if star_count>elapsed_time :
                 for _ in range(3):
                     star_x = new_func4()
                     star = new_func5(star_x)
                     stars.append(star)
-                star_add_increment = max(100, star_add_increment - 1)      
-                star_count = 0      
+            star=0          
                     
 
             

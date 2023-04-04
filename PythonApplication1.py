@@ -25,7 +25,7 @@ pan = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, P
 st = pygame.transform.scale(pygame.image.load("start.jpeg"), (WIDTH, HEIGHT))
 
 
-def draw(player, elapsed_time, stars,point,stop, gamestarter):
+def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == True :
         WIN.blit(BG, (0, 0))
         WIN.blit(pan,(player.x,player.y))
@@ -36,8 +36,7 @@ def draw(player, elapsed_time, stars,point,stop, gamestarter):
     else:
         WIN.blit(st, (0,0))
     
-    for star in stars:
-        WIN.blit(ful, star)        
+            
     if elapsed_time > stop :
         WIN.blit(BG1, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
@@ -96,7 +95,7 @@ def main():
             start_time = new_func3()
         elapsed_time = time.time() - start_time
         
-        gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increment,player)
+        gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increment,player,point)
         draw(player, elapsed_time, stars, point,stop, gamestarter)
 
     pygame.quit()
@@ -114,7 +113,6 @@ def main():
 
 def new_func5(star_x):
     star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
-    #pygame.time.delay(250)
     return star
 
 def new_func4():
@@ -137,22 +135,22 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
-def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increment,player):
+def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increment,player,point):
     
     star_count += clock.tick(60)
     
         
     
-    if  gamestarter == True and elapsed_time < stop:    
+    if  gamestarter == True: #and elapsed_time < stop:    
             for star in stars[:]:
                 star.y += STAR_VEL
                 if star.y > HEIGHT-50:
                     stars.remove(star)
-                elif  star.colliderect(player) : #star.y + star.height >= player.y and
+                elif  star.colliderect(player) : 
                     stars.remove(star)
                     point=point+1
                 
-                    break    #Meccanismo del gioco
+                    break    
             
             if star_count > star_add_increment:
                 for _ in range(3):
@@ -166,7 +164,7 @@ def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increm
                 star_add_increment = max(100, star_add_increment - 1)
                 star_count = 0
             
-
+            
 
 
 
@@ -176,13 +174,13 @@ def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increm
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
+            
 
 
 
 
 if __name__ == "__main__":
     main()
-
 
 
 

@@ -25,9 +25,6 @@ pan = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, P
 st = pygame.transform.scale(pygame.image.load("start.jpeg"), (WIDTH, HEIGHT))
 
 
-
-
-
 def draw(player, elapsed_time, stars,point,stop, gamestarter):
     if gamestarter == True :
         WIN.blit(BG, (0, 0))
@@ -47,7 +44,10 @@ def draw(player, elapsed_time, stars,point,stop, gamestarter):
         WIN.blit(finish_text, (0, 0))                
     if gamestarter == False :
         WIN.blit(st, (0,0)) 
-    pygame.display.update()    
+    pygame.display.update() 
+
+
+   
     
 
     
@@ -80,13 +80,16 @@ def main():
     
 
     while run:
+        
         for event in pygame.event.get():    
                 if event.type == pygame.QUIT:
                     run = False
                     
                 else:
                     run = True
-        keys = new_func2(player)    
+        
+        
+        keys = new_func2()    
         if keys[pygame.K_SPACE] and vab == True :         #Tasto per far partire il gioco    
             gamestarter = True
             vab = False  
@@ -122,7 +125,7 @@ def new_func3():
     start_time=time.time()
     return start_time
 
-def new_func2(player):
+def new_func2():
     keys = pygame.key.get_pressed()
     return keys
 
@@ -168,7 +171,7 @@ def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increm
 
 
 
-            keys = new_func2(player)
+            keys = new_func2()
             if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
@@ -179,6 +182,12 @@ def gioco_1(star_count,clock,gamestarter,elapsed_time,stop,stars,star_add_increm
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
 
 
 

@@ -38,7 +38,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
 
     else:
         WIN.blit(start, (0,0))
-    
+        
             
     if elapsed_time > stop :
         WIN.blit(sfbianco, (0, 0))
@@ -46,6 +46,8 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
         WIN.blit(finish_text, (0, 0))                
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
+        istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
+        WIN.blit(istruzioni,(450,500 ))
     
     pygame.display.update() 
 

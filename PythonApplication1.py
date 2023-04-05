@@ -18,34 +18,34 @@ STAR_HEIGHT = 70
 STAR_VEL = 3
 FONT = pygame.font.SysFont("comicsans", 30)
 
-BG = pygame.transform.scale(pygame.image.load("bg.jpeg"), (WIDTH, HEIGHT))
-BG1 = pygame.transform.scale(pygame.image.load("bg1.jpeg"), (WIDTH, HEIGHT))
-ful = pygame.transform.scale(pygame.image.load("ful1.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
-pan = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
-st = pygame.transform.scale(pygame.image.load("start.png"), (WIDTH, HEIGHT))
+BG1 = pygame.transform.scale(pygame.image.load("background1.jpeg"), (WIDTH, HEIGHT))
+sfbianco = pygame.transform.scale(pygame.image.load("sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
+fulmine = pygame.transform.scale(pygame.image.load("fulmine.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
+pannello = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
+start = pygame.transform.scale(pygame.image.load("start.png"), (WIDTH, HEIGHT))
 
 
 def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == True :
-        WIN.blit(BG, (0, 0))
-        WIN.blit(pan,(player.x,player.y))
+        WIN.blit(BG1, (0, 0))
+        WIN.blit(pannello,(player.x,player.y))
         time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
         WIN.blit(time_text, (10, 10))
         point_text = FONT.render(f"Points: {round(point)}", 1, "white")
         WIN.blit(point_text, (WIDTH-150,10))
         for star in stars:
-            WIN.blit(ful,(star.x,star.y))
+            WIN.blit(fulmine,(star.x,star.y))
 
     else:
-        WIN.blit(st, (0,0))
+        WIN.blit(start, (0,0))
     
             
     if elapsed_time > stop :
-        WIN.blit(BG1, (0, 0))
+        WIN.blit(sfbianco, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
         WIN.blit(finish_text, (0, 0))                
     if gamestarter == False :
-        WIN.blit(st, (0,0)) 
+        WIN.blit(start, (0,0)) 
     
     pygame.display.update() 
 
@@ -140,6 +140,25 @@ def main():
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        #Stampa del gioco
         draw(player, elapsed_time, stars, point,stop, gamestarter)
 
         

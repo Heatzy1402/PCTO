@@ -76,8 +76,8 @@ def main():
     clock = new_func1() 
     player = new_func()
     star_add_increment= 2000
-    
-    
+    start_time=0
+    a=True
     
     
 
@@ -92,7 +92,9 @@ def main():
         
 
         #Controllo del tempo
-        start_time = new_func3()
+        if gamestarter == True and a==True :   
+            start_time = new_func3() 
+            a=False
         elapsed_time = time.time() - start_time
            
 

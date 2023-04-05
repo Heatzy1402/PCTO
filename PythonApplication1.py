@@ -82,35 +82,63 @@ def main():
     
 
     while run:
+        #Chiusura Gioco#
         for event in pygame.event.get():    
-                if event.type == pygame.QUIT:
-                    run = False
+           if event.type == pygame.QUIT:
+              run = False
                     
-                else:
-                    run = True
+           else:
+                run = True
         
-        
+
+        #Controllo del tempo
+        start_time = new_func3()
+        elapsed_time = time.time() - start_time
+           
+
+
+        #Stampa Stelle
         star_count += clock.tick(60)
         elapsed_time = time.time() - start_time
         if star_count > star_add_increment:
-            for _ in range(3):
-                star_x = random.randint(0, WIDTH - STAR_WIDTH)
-                star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
-                stars.append(star)                   
+                for _ in range(3):
+                    star_x = random.randint(0, WIDTH - STAR_WIDTH)
+                    star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
+                    stars.append(star)                   
                 
 
-            star_add_increment = max(200, star_add_increment - 50)
-            star_count = 0
+                star_add_increment = max(200, star_add_increment - 50)
+                star_count = 0
+        
+                
+                
+        #Tasto d'inizio         
         keys = new_func2()    
-        if keys[pygame.K_SPACE] and vab == True :         #Tasto per far partire il gioco    
-            gamestarter = True
-            vab = False  
-            start_time = new_func3()
-        elapsed_time = time.time() - start_time
+        if keys[pygame.K_SPACE] and vab == True :             
+           gamestarter = True
+           vab = False  
         
-        gioco_1(gamestarter,elapsed_time,stop,stars,player,point)
-        draw(player, elapsed_time, stars, point ,stop, gamestarter)
         
+        
+        
+        
+
+        #Gioco numero 1
+        if  gamestarter == True and elapsed_time < stop:    
+            for star in stars[:]:
+                star.y += STAR_VEL
+                if star.y > HEIGHT-50:
+                    stars.remove(star)
+                elif  star.colliderect(player) : 
+                    stars.remove(star)
+                    point=point+1
+            keys = new_func2()
+            if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
+                player.x -= PLAYER_VEL
+            if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
+                player.x += PLAYER_VEL
+
+        draw(player, elapsed_time, stars, point,stop, gamestarter)
 
         
 
@@ -151,40 +179,6 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
-def gioco_1(gamestarter,elapsed_time,stop,stars,player,point):
-    
-    
-    
-    
-        
-    
-    if  gamestarter == True and elapsed_time < stop:    
-            for star in stars[:]:
-                star.y += STAR_VEL
-                if star.y > HEIGHT-50:
-                    stars.remove(star)
-                elif  star.colliderect(player) : 
-                    stars.remove(star)
-                    point=point+1
-                
-                        
-            
-                 
-
-            
-                    
-            
-            
-
-
-
-
-            keys = new_func2()
-            if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
-                player.x -= PLAYER_VEL
-            if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
-                player.x += PLAYER_VEL
-            draw(player, elapsed_time, stars, point,stop, gamestarter)
 
 
 

@@ -5,8 +5,8 @@ pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
 #from pygame.locals import *
-WIDTH = infoObject.current_w 
-HEIGHT = infoObject.current_h- 100
+WIDTH =  infoObject.current_w 
+HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
 #WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
@@ -204,7 +204,7 @@ def new_func():
     return player
 
 
-def gioco_2() : 
+def gioco_2(WIDTH,HEIGTH) : 
     SKY_BLUE = (135, 206, 235)
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
@@ -213,13 +213,14 @@ def gioco_2() :
     running = True
     GREEN = (0, 255, 0)
     RED = (255, 0, 0)
-    true_button = pygame.Rect(150, 200, 100, 50)
+    WIN.fill(SKY_BLUE)
+    true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
     pygame.draw.rect(WIN, GREEN, true_button)
     # Imposta la lista delle domande e delle risposte corrette
     questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?.", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.", "Chi ha un panello fotovoltaico risparmia sulle bollette!", "NON esistono leggi che salvaguardino l'ambiente."]
     correct_answers = [True, False, True, True, False]
     # Disegna lo sfondo
-    WIN.fill(SKY_BLUE)
+    
 
     # Disegna la domanda corrente
     question_text = FONT.render(questions[current_question], True, BLACK)
@@ -229,7 +230,7 @@ def gioco_2() :
     # Disegna i bottoni
     
 
-    false_button = pygame.Rect(550, 200, 100, 50)
+    false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
     pygame.draw.rect(WIN, RED, false_button)
 
         # Disegna il testo sui bottoni
@@ -262,7 +263,7 @@ def gioco_2() :
                     if correct_answers[current_question]:
                         score += 1
                         current_question += 1
-                        if current_question == len(questions):
+                        if current_question == 5 :#len(questions):
                             running = False
                     else:
                         running = False
@@ -279,7 +280,7 @@ def gioco_2() :
     
 
     # Se l'utente ha risposto a tutte le domande o ha risposto in modo errato, mostra la schermata di game over
-    if current_question == len(questions) or not running :
+    if current_question == len(questions) :#or not running :
         # Mostra la schermata di game over
         gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
         gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
@@ -302,20 +303,20 @@ def gioco_2() :
 
 
 
-def main():
+def main(WIDTH,HEIGHT):
     control1 = False
     control2 = True
     
     if control1 :
         gioco_1()
     elif control2:
-        gioco_2()
+        gioco_2(WIDTH,HEIGHT)
 
 
 
 
 if __name__ == "__main__":
-    main()
+    main(WIDTH,HEIGHT)
 
 
 

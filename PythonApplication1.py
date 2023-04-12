@@ -4,7 +4,7 @@ import random
 pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
-
+#from pygame.locals import *
 WIDTH = infoObject.current_w 
 HEIGHT = infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -66,7 +66,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     
 
 
-def main():
+def gioco_1():
     gamestarter = False
     run = True
     vab = True
@@ -162,6 +162,7 @@ def main():
 
         #Stampa del gioco
         draw(player, elapsed_time, stars, point,stop, gamestarter)
+    
 
         
 
@@ -202,6 +203,113 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
+
+def gioco_2() : 
+    SKY_BLUE = (135, 206, 235)
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    score = 0
+    current_question = 0
+    running = True
+    GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
+    true_button = pygame.Rect(150, 200, 100, 50)
+    pygame.draw.rect(WIN, GREEN, true_button)
+    # Imposta la lista delle domande e delle risposte corrette
+    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?.", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.", "Chi ha un panello fotovoltaico risparmia sulle bollette!", "NON esistono leggi che salvaguardino l'ambiente."]
+    correct_answers = [True, False, True, True, False]
+    # Disegna lo sfondo
+    WIN.fill(SKY_BLUE)
+
+    # Disegna la domanda corrente
+    question_text = FONT.render(questions[current_question], True, BLACK)
+    question_rect = question_text.get_rect(center=(WIDTH//2, 100))
+    WIN.blit(question_text, question_rect)
+
+    # Disegna i bottoni
+    
+
+    false_button = pygame.Rect(550, 200, 100, 50)
+    pygame.draw.rect(WIN, RED, false_button)
+
+        # Disegna il testo sui bottoni
+    true_text = FONT.render("Vero", True, BLACK)
+    true_rect = true_text.get_rect(center=true_button.center)
+    WIN.blit(true_text, true_rect)
+
+    false_text = FONT.render("Falso", True, BLACK)
+    false_rect = false_text.get_rect(center=false_button.center)
+    WIN.blit(false_text, false_rect)
+
+    # Disegna il punteggio
+    score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
+    score_rect = score_text.get_rect(center=(WIDTH//2, 400))
+    WIN.blit(score_text, score_rect)
+
+    # Aggiorna la finestra di gioco
+    pygame.display.flip()
+    # Inizializza le variabili
+    
+
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                # Verifica se l'utente ha cliccato il bottone Vero
+                if true_button.collidepoint(event.pos):
+                    if correct_answers[current_question]:
+                        score += 1
+                        current_question += 1
+                        if current_question == len(questions):
+                            running = False
+                    else:
+                        running = False
+                # Verifica se l'utente ha cliccato il bottone Falso
+                elif false_button.collidepoint(event.pos):
+                    if not correct_answers[current_question]:
+                        score += 1
+                        current_question += 1
+                        if current_question == len(questions):
+                            running = False
+                    else:
+                        running = False
+
+    
+
+    # Se l'utente ha risposto a tutte le domande o ha risposto in modo errato, mostra la schermata di game over
+    if current_question == len(questions) or not running :
+        # Mostra la schermata di game over
+        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
+        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
+        WIN.fill(RED)
+        WIN.blit(gameover_text, gameover_rect)
+        pygame.display.flip()
+
+   
+   
+   
+        # Attendi 3 secondi prima di chiudere la finestra
+        #pygame.time.wait(5000)
+
+        # Chiudi la finestra di Pygame
+        #pygame.quit()
+
+
+
+
+
+
+
+def main():
+    control1 = False
+    control2 = True
+    
+    if control1 :
+        gioco_1()
+    elif control2:
+        gioco_2()
 
 
 

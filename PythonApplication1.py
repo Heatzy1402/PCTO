@@ -66,7 +66,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     
 
 
-def gioco_1():
+def gioco_1(control1,control2):
     gamestarter = False
     run = True
     vab = True
@@ -145,7 +145,10 @@ def gioco_1():
 
 
 
-
+        if gamestarter == True and elapsed_time >stop:
+            pygame.time.delay(2000)
+            control1 =False
+            control2 = True
 
 
 
@@ -304,11 +307,11 @@ def gioco_2(WIDTH,HEIGTH) :
 
 
 def main(WIDTH,HEIGHT):
-    control1 = False
-    control2 = True
+    control1 = True
+    control2 = False
     
     if control1 :
-        gioco_1()
+        gioco_1(control1,control2)
     elif control2:
         gioco_2(WIDTH,HEIGHT)
 

@@ -36,7 +36,8 @@ pannello = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WID
 start = pygame.transform.scale(pygame.image.load("start.png"), (WIDTH, HEIGHT))
 
 
-def draw(player, elapsed_time, stars ,point,stop, gamestarter):
+
+def draw(player, elapsed_time, stars ,point,stop, gamestarter,run):
     if gamestarter == True :
         WIN.blit(BG1, (0, 0))
         WIN.blit(pannello,(player.x,player.y))
@@ -54,7 +55,8 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if elapsed_time > stop :
         WIN.blit(sfbianco, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
-        WIN.blit(finish_text, (0, 0))                
+        WIN.blit(finish_text, (0, 0)) 
+        run = False
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
@@ -172,13 +174,14 @@ def gioco_1():
 
 
         #Stampa del gioco
-        draw(player, elapsed_time, stars, point,stop, gamestarter)
-        return
+        draw(player, elapsed_time, stars, point,stop, gamestarter,run)
+        
     
 
         
 
-    pygame.quit()
+    return
+
 
 
 
@@ -248,16 +251,16 @@ def draw2(questions, current_question,gover,false_button,true_button,score):
 
     pygame.display.update()   
 
-
-
-
-
-
-
-
-
-
 def gioco_2(WIDTH,HEIGTH) : 
+
+
+
+
+
+
+
+
+
     running = True
     gover = False
     score = 0
@@ -320,13 +323,9 @@ def gioco_2(WIDTH,HEIGTH) :
 
 
 def main(WIDTH,HEIGHT):
-    control1 = not True
-    control2 = not False
     
-    if control1 :
-        gioco_1()
-    elif control2:
-        gioco_2(WIDTH,HEIGHT)
+    gioco_1()
+    gioco_2(WIDTH,HEIGHT)
 
 
 

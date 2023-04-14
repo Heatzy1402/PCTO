@@ -47,7 +47,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
-        WIN.blit(istruzioni,(450,500 ))
+        WIN.blit(istruzioni,(WIDTH/2,HEIGHT/2 ))
     
     pygame.display.update() 
 
@@ -141,14 +141,12 @@ def gioco_1(control1,control2):
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
+        else:
+            break
 
 
 
 
-        if gamestarter == True and elapsed_time >stop:
-            pygame.time.delay(2000)
-            control1 =False
-            control2 = True
 
 
 
@@ -307,19 +305,20 @@ def gioco_2(WIDTH,HEIGTH) :
 
 
 def main(WIDTH,HEIGHT):
-    control1 = True
-    control2 = False
+    control1 = False
+    control2 = True
     
     if control1 :
-        gioco_1(control1,control2)
+        gioco_1()
     elif control2:
         gioco_2(WIDTH,HEIGHT)
 
 
 
 
+
 if __name__ == "__main__":
-    main(WIDTH,HEIGHT)
+    main()
 
 
 

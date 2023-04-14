@@ -141,8 +141,8 @@ def gioco_1():
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
-        else:
-            break
+        #else:
+        #    break
 
 
 
@@ -163,6 +163,7 @@ def gioco_1():
 
         #Stampa del gioco
         draw(player, elapsed_time, stars, point,stop, gamestarter)
+        return
     
 
         

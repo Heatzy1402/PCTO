@@ -1,15 +1,16 @@
+from calendar import c
 import pygame
 import time
 import random
 pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
-#from pygame.locals import *
+
 WIDTH =  infoObject.current_w 
 HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
-#WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+
 PLAYER_WIDTH = 80
 PLAYER_HEIGHT = 100
 PLAYER_VEL = 7
@@ -141,13 +142,12 @@ def gioco_1():
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
-        #else:
-        #    break
-
-
-
         
-        
+
+
+
+
+
 
 
 
@@ -208,6 +208,7 @@ def new_func():
 
 def gioco_2(WIDTH,HEIGTH) : 
     SKY_BLUE = (135, 206, 235)
+    gm = False
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     score = 0
@@ -225,9 +226,7 @@ def gioco_2(WIDTH,HEIGTH) :
     
 
     # Disegna la domanda corrente
-    question_text = FONT.render(questions[current_question], True, BLACK)
-    question_rect = question_text.get_rect(center=(WIDTH//2, 100))
-    WIN.blit(question_text, question_rect)
+    
 
     # Disegna i bottoni
     
@@ -250,7 +249,7 @@ def gioco_2(WIDTH,HEIGTH) :
     WIN.blit(score_text, score_rect)
 
     # Aggiorna la finestra di gioco
-    pygame.display.flip()
+    
     # Inizializza le variabili
     
 
@@ -259,62 +258,54 @@ def gioco_2(WIDTH,HEIGTH) :
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                # Verifica se l'utente ha cliccato il bottone Vero
-                if true_button.collidepoint(event.pos):
-                    if correct_answers[current_question]:
-                        score += 1
-                        current_question += 1
-                        if current_question == 5 :#len(questions):
-                            running = False
-                    else:
-                        running = False
-                # Verifica se l'utente ha cliccato il bottone Falso
-                elif false_button.collidepoint(event.pos):
-                    if not correct_answers[current_question]:
-                        score += 1
-                        current_question += 1
-                        if current_question == len(questions):
-                            running = False
-                    else:
-                        running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                current_question= current_question+1
+                pygame.display.flip()
 
-    
+
+
+        question_text = FONT.render(questions[current_question], True, BLACK)
+        question_rect = question_text.get_rect(center=(WIDTH//2, 100))
+        WIN.blit(question_text, question_rect)
+        pygame.display.update()
+        if current_question == 5 or gm == True  :
+        # Mostra la schermata di game over
+            gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
+            gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
+            WIN.fill(RED)
+            WIN.blit(gameover_text, gameover_rect)
+            
+    pygame.quit()
 
     # Se l'utente ha risposto a tutte le domande o ha risposto in modo errato, mostra la schermata di game over
-    if current_question == len(questions) :#or not running :
-        # Mostra la schermata di game over
-        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
-        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
-        WIN.fill(RED)
-        WIN.blit(gameover_text, gameover_rect)
-        pygame.display.flip()
-
-   
-   
-   
-        # Attendi 3 secondi prima di chiudere la finestra
-        #pygame.time.wait(5000)
-
-        # Chiudi la finestra di Pygame
-        #pygame.quit()
-
-
-
-
-
-
-
-def main():
-    gioco_1()
-    gioco_2(WIDTH,HEIGHT)
     
+
+    
+   
+   
+       
+
+
+
+
+
+
+
+def main(WIDTH,HEIGHT):
+    control1 = not True
+    control2 = not False
+    
+    if control1 :
+        gioco_1()
+    elif control2:
+        gioco_2(WIDTH,HEIGHT)
+
 
 
 
 
 if __name__ == "__main__":
-    main()
+    main(WIDTH,HEIGHT)
 
 
 

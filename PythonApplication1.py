@@ -4,12 +4,12 @@ import random
 pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
-#from pygame.locals import *
+
 WIDTH =  infoObject.current_w 
 HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
-#WIN = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+
 PLAYER_WIDTH = 80
 PLAYER_HEIGHT = 100
 PLAYER_VEL = 7
@@ -166,7 +166,7 @@ def gioco_1():
 
         
 
-    #pygame.quit()
+    pygame.quit()
 
 
 
@@ -248,7 +248,7 @@ def gioco_2(WIDTH,HEIGTH) :
     WIN.blit(score_text, score_rect)
 
     # Aggiorna la finestra di gioco
-    pygame.display.flip()
+    
     # Inizializza le variabili
     
 
@@ -276,11 +276,11 @@ def gioco_2(WIDTH,HEIGTH) :
                             running = False
                     else:
                         running = False
-
+        pygame.display.update()
     
 
     # Se l'utente ha risposto a tutte le domande o ha risposto in modo errato, mostra la schermata di game over
-    if current_question == len(questions) :#or not running :
+    if current_question == len(questions) or running==False :
         # Mostra la schermata di game over
         gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
         gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
@@ -288,7 +288,7 @@ def gioco_2(WIDTH,HEIGTH) :
         WIN.blit(gameover_text, gameover_rect)
         pygame.display.flip()
 
-   
+    
    
    
        

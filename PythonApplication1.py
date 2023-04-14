@@ -11,6 +11,16 @@ HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
 
+
+SKY_BLUE = (135, 206, 235)
+WHITE = (255, 255, 255)    
+GREEN = (0, 255, 0)    
+RED = (255, 0, 0)    
+BLACK= (0,0,0)   
+
+
+
+
 PLAYER_WIDTH = 80
 PLAYER_HEIGHT = 100
 PLAYER_VEL = 7
@@ -205,52 +215,65 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
+def draw2(questions, current_question,gover,false_button,true_button,score):
+    WIN.fill(SKY_BLUE)
+    
+
+    
+    if gover == False and current_question<=5:
+        pygame.draw.rect(WIN, RED, false_button)
+        pygame.draw.rect(WIN, GREEN, true_button)
+        true_text = FONT.render("Vero", True, BLACK)
+        true_rect = true_text.get_rect(center=true_button.center)
+        WIN.blit(true_text, true_rect)
+        false_text = FONT.render("Falso", True, BLACK)
+        false_rect = false_text.get_rect(center=false_button.center)
+        WIN.blit(false_text, false_rect)
+        pygame.draw.rect(WIN, SKY_BLUE, (0, 0, WIDTH, 150))  # Copre la domanda precedente con il colore dello sfondo
+        question_text = FONT.render(questions[current_question], True, BLACK)
+        question_rect = question_text.get_rect(center=(WIDTH//2, 100))    
+        WIN.blit(question_text, question_rect)
+    if gover == True :
+        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
+        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
+        WIN.fill(RED)
+        WIN.blit(gameover_text, gameover_rect)
+        score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
+        score_rect = score_text.get_rect(center=(WIDTH//2, 400))
+        WIN.blit(score_text, score_rect)
+    
+
+
+
+
+    pygame.display.update()   
+
+
+
+
+
+
+
+
+
 
 def gioco_2(WIDTH,HEIGTH) : 
-    SKY_BLUE = (135, 206, 235)
-    gm = False
-    BLACK = (0, 0, 0)
-    WHITE = (255, 255, 255)
+    running = True
+    gover = False
     score = 0
     current_question = 0
-    running = True
-    GREEN = (0, 255, 0)
-    RED = (255, 0, 0)
-    WIN.fill(SKY_BLUE)
-    true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
-    pygame.draw.rect(WIN, GREEN, true_button)
-    # Imposta la lista delle domande e delle risposte corrette
     questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?.", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.", "Chi ha un panello fotovoltaico risparmia sulle bollette!", "NON esistono leggi che salvaguardino l'ambiente."]
     correct_answers = [True, False, True, True, False]
-    # Disegna lo sfondo
-    
-
-    # Disegna la domanda corrente
-    
-
-    # Disegna i bottoni
-    
-
     false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
-    pygame.draw.rect(WIN, RED, false_button)
-
-        # Disegna il testo sui bottoni
-    true_text = FONT.render("Vero", True, BLACK)
-    true_rect = true_text.get_rect(center=true_button.center)
-    WIN.blit(true_text, true_rect)
-
-    false_text = FONT.render("Falso", True, BLACK)
-    false_rect = false_text.get_rect(center=false_button.center)
-    WIN.blit(false_text, false_rect)
-
-    # Disegna il punteggio
-    score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
-    score_rect = score_text.get_rect(center=(WIDTH//2, 400))
-    WIN.blit(score_text, score_rect)
-
-    # Aggiorna la finestra di gioco
+    true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
     
-    # Inizializza le variabili
+    
+    
+    
+    
+    
+
+    
     
 
 
@@ -259,25 +282,30 @@ def gioco_2(WIDTH,HEIGTH) :
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                current_question= current_question+1
-                pygame.display.flip()
+                if true_button.collidepoint(event.pos):
+                    if correct_answers[current_question]:
+                        score+=1
+                        current_question+=1
+                    else:
+                        gover=True
+                if false_button.collidepoint(event.pos):
+                    if not correct_answers[current_question]:
+                        score+=1
+                        current_question+=1
+                    else:
+                        gover=True
+                
 
 
-
-        question_text = FONT.render(questions[current_question], True, BLACK)
-        question_rect = question_text.get_rect(center=(WIDTH//2, 100))
-        WIN.blit(question_text, question_rect)
-        pygame.display.update()
-        if current_question == 5 or gm == True  :
-        # Mostra la schermata di game over
-            gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
-            gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
-            WIN.fill(RED)
-            WIN.blit(gameover_text, gameover_rect)
+        draw2(questions,current_question,gover,false_button,true_button,score)
+        
+        
+        
+            
             
     pygame.quit()
 
-    # Se l'utente ha risposto a tutte le domande o ha risposto in modo errato, mostra la schermata di game over
+    
     
 
     

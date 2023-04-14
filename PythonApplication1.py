@@ -1,3 +1,4 @@
+from calendar import c
 import pygame
 import time
 import random
@@ -206,6 +207,7 @@ def new_func():
 
 def gioco_2(WIDTH,HEIGTH) : 
     SKY_BLUE = (135, 206, 235)
+    gm = False
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     score = 0
@@ -223,9 +225,7 @@ def gioco_2(WIDTH,HEIGTH) :
     
 
     # Disegna la domanda corrente
-    question_text = FONT.render(questions[current_question], True, BLACK)
-    question_rect = question_text.get_rect(center=(WIDTH//2, 100))
-    WIN.blit(question_text, question_rect)
+    
 
     # Disegna i bottoni
     
@@ -257,36 +257,27 @@ def gioco_2(WIDTH,HEIGTH) :
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                # Verifica se l'utente ha cliccato il bottone Vero
-                if true_button.collidepoint(event.pos):
-                    if correct_answers[current_question]:
-                        score += 1
-                        current_question += 1
-                        if current_question == 5 :#len(questions):
-                            running = False
-                    else:
-                        running = False
-                # Verifica se l'utente ha cliccato il bottone Falso
-                elif false_button.collidepoint(event.pos):
-                    if not correct_answers[current_question]:
-                        score += 1
-                        current_question += 1
-                        if current_question == len(questions):
-                            running = False
-                    else:
-                        running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                current_question= current_question+1
+                pygame.display.flip()
+
+
+
+        question_text = FONT.render(questions[current_question], True, BLACK)
+        question_rect = question_text.get_rect(center=(WIDTH//2, 100))
+        WIN.blit(question_text, question_rect)
         pygame.display.update()
-    
+        if current_question == 5 or gm == True  :
+        # Mostra la schermata di game over
+            gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
+            gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
+            WIN.fill(RED)
+            WIN.blit(gameover_text, gameover_rect)
+            
+    pygame.quit()
 
     # Se l'utente ha risposto a tutte le domande o ha risposto in modo errato, mostra la schermata di game over
-    if current_question == len(questions) or running==False :
-        # Mostra la schermata di game over
-        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
-        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
-        WIN.fill(RED)
-        WIN.blit(gameover_text, gameover_rect)
-        pygame.display.flip()
+    
 
     
    

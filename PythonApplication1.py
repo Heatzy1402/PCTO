@@ -66,7 +66,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     
 
 
-def gioco_1(control1,control2):
+def gioco_1():
     gamestarter = False
     run = True
     vab = True
@@ -141,8 +141,7 @@ def gioco_1(control1,control2):
                 player.x -= PLAYER_VEL
             if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
                 player.x += PLAYER_VEL
-        else:
-            break
+        
 
 
 
@@ -167,7 +166,7 @@ def gioco_1(control1,control2):
 
         
 
-    pygame.quit()
+    #pygame.quit()
 
 
 
@@ -292,11 +291,7 @@ def gioco_2(WIDTH,HEIGTH) :
    
    
    
-        # Attendi 3 secondi prima di chiudere la finestra
-        #pygame.time.wait(5000)
-
-        # Chiudi la finestra di Pygame
-        #pygame.quit()
+       
 
 
 
@@ -305,8 +300,8 @@ def gioco_2(WIDTH,HEIGTH) :
 
 
 def main(WIDTH,HEIGHT):
-    control1 = False
-    control2 = True
+    control1 = not True
+    control2 = not False
     
     if control1 :
         gioco_1()
@@ -318,7 +313,7 @@ def main(WIDTH,HEIGHT):
 
 
 if __name__ == "__main__":
-    main()
+    main(WIDTH,HEIGHT)
 
 
 

@@ -1,4 +1,3 @@
-from calendar import c
 import pygame
 import time
 import random
@@ -10,7 +9,7 @@ WIDTH =  infoObject.current_w
 HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Minigames")
-
+elapsed_time=0
 
 SKY_BLUE = (135, 206, 235)
 WHITE = (255, 255, 255)    
@@ -37,7 +36,7 @@ start = pygame.transform.scale(pygame.image.load("start.png"), (WIDTH, HEIGHT))
 
 
 
-def draw(player, elapsed_time, stars ,point,stop, gamestarter,run):
+def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == True :
         WIN.blit(BG1, (0, 0))
         WIN.blit(pannello,(player.x,player.y))
@@ -56,15 +55,46 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,run):
         WIN.blit(sfbianco, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
         WIN.blit(finish_text, (0, 0)) 
-        #run = False
+        
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
         WIN.blit(istruzioni,(WIDTH/2,HEIGHT/2 ))
+    pygame.display.flip()
+    #pygame.display.update() 
+
+def draw2(questions, current_question,gover,false_button,true_button,score):
+    WIN.fill(SKY_BLUE)
     
-    pygame.display.update() 
+
+    
+    if gover == False and current_question<=5:
+        pygame.draw.rect(WIN, RED, false_button)
+        pygame.draw.rect(WIN, GREEN, true_button)
+        true_text = FONT.render("Vero", True, BLACK)
+        true_rect = true_text.get_rect(center=true_button.center)
+        WIN.blit(true_text, true_rect)
+        false_text = FONT.render("Falso", True, BLACK)
+        false_rect = false_text.get_rect(center=false_button.center)
+        WIN.blit(false_text, false_rect)
+        pygame.draw.rect(WIN, SKY_BLUE, (0, 0, WIDTH, 150))  # Copre la domanda precedente con il colore dello sfondo
+        question_text = FONT.render(questions[current_question], True, BLACK)
+        question_rect = question_text.get_rect(center=(WIDTH//2, 100))    
+        WIN.blit(question_text, question_rect)
+    if gover == True :
+        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
+        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
+        WIN.fill(RED)
+        WIN.blit(gameover_text, gameover_rect)
+        score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
+        score_rect = score_text.get_rect(center=(WIDTH//2, 400))
+        WIN.blit(score_text, score_rect)
+    
 
 
+
+
+    pygame.display.update()
    
     
 
@@ -80,6 +110,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,run):
 
 
 def gioco_1():
+    
     gamestarter = False
     run = True
     vab = True
@@ -97,13 +128,20 @@ def gioco_1():
     
 
     while run:
+        
+        
+        keys = new_func2()
+        
         #Chiusura Gioco#
         for event in pygame.event.get():    
-           if event.type == pygame.QUIT:
+           if event.type == pygame.QUIT :
               run = False
-                    
-           else:
-                run = True
+              
+              pygame.quit()
+              gioco_2(WIDTH,HEIGHT) 
+              
+           
+           
         
 
         #Controllo del tempo
@@ -111,7 +149,9 @@ def gioco_1():
             start_time = new_func3() 
             a=False
         elapsed_time = time.time() - start_time
-           
+        if elapsed_time > stop+5:
+            run= False
+            return   
 
 
         #Stampa Stelle
@@ -130,7 +170,7 @@ def gioco_1():
                 
                 
         #Tasto d'inizio         
-        keys = new_func2()    
+            
         if keys[pygame.K_SPACE] and vab == True :             
            gamestarter = True
            vab = False  
@@ -169,8 +209,8 @@ def gioco_1():
 
 
 
-        if elapsed_time >= stop : run == False
-        
+
+
 
 
         #Stampa del gioco
@@ -179,7 +219,7 @@ def gioco_1():
     
 
         
-    
+
     return
 
 
@@ -193,67 +233,14 @@ def gioco_1():
 
 
 
-
-def new_func5(star_x):
-    star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
-    return star
-
-def new_func4():
-    star_x = random.randint(0, WIDTH - STAR_WIDTH)
-    return star_x
-
-def new_func3():
-    start_time=time.time()
-    return start_time
-
-def new_func2():
-    keys = pygame.key.get_pressed()
-    return keys
-
-def new_func1():
-    clock = pygame.time.Clock()
-    return clock
-
-def new_func():
-    player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
-    return player
-
-def draw2(questions, current_question,gover,false_button,true_button,score):
-    WIN.fill(SKY_BLUE)
+        
+        draw(player, elapsed_time, stars, point,stop, gamestarter)
     
-
-    
-    if gover == False and current_question<=5:
-        pygame.draw.rect(WIN, RED, false_button)
-        pygame.draw.rect(WIN, GREEN, true_button)
-        true_text = FONT.render("Vero", True, BLACK)
-        true_rect = true_text.get_rect(center=true_button.center)
-        WIN.blit(true_text, true_rect)
-        false_text = FONT.render("Falso", True, BLACK)
-        false_rect = false_text.get_rect(center=false_button.center)
-        WIN.blit(false_text, false_rect)
-        pygame.draw.rect(WIN, SKY_BLUE, (0, 0, WIDTH, 150))  # Copre la domanda precedente con il colore dello sfondo
-        question_text = FONT.render(questions[current_question], True, BLACK)
-        question_rect = question_text.get_rect(center=(WIDTH//2, 100))    
-        WIN.blit(question_text, question_rect)
-    if gover == True :
-        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
-        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
-        WIN.fill(RED)
-        WIN.blit(gameover_text, gameover_rect)
-        score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
-        score_rect = score_text.get_rect(center=(WIDTH//2, 400))
-        WIN.blit(score_text, score_rect)
-    
-
-
-
-
-    pygame.display.update()   
-
+        
+        
 def gioco_2(WIDTH,HEIGTH) : 
 
-
+    
 
 
     
@@ -306,7 +293,51 @@ def gioco_2(WIDTH,HEIGTH) :
         
             
             
-    pygame.quit()
+    pygame.quit()    
+
+        
+  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+def new_func5(star_x):
+    star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
+    return star
+
+def new_func4():
+    star_x = random.randint(0, WIDTH - STAR_WIDTH)
+    return star_x
+
+def new_func3():
+    start_time=time.time()
+    return start_time
+
+def new_func2():
+    keys = pygame.key.get_pressed()
+    return keys
+
+def new_func1():
+    clock = pygame.time.Clock()
+    return clock
+
+def new_func():
+    player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
+    return player
+
+   
+
+
 
     
     
@@ -334,7 +365,7 @@ def main(WIDTH,HEIGHT):
 
 
 if __name__ == "__main__":
-    main(WIDTH,HEIGHT)
+    main(WIDTH,HEIGHT,)
 
 
 

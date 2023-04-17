@@ -46,7 +46,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,run):
         point_text = FONT.render(f"Points: {round(point)}", 1, "white")
         WIN.blit(point_text, (WIDTH-150,10))
         for star in stars:
-            WIN.blit(fulmine,(star.x,star.y))
+            WIN.blit(fulmine,(star.x,star.y))  
 
     else:
         WIN.blit(start, (0,0))
@@ -56,7 +56,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,run):
         WIN.blit(sfbianco, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
         WIN.blit(finish_text, (0, 0)) 
-        run = False
+        #run = False
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
@@ -83,7 +83,7 @@ def gioco_1():
     gamestarter = False
     run = True
     vab = True
-    stop = 10
+    stop = 5
     star_count=0
     point = 0
     start_time=0
@@ -169,8 +169,8 @@ def gioco_1():
 
 
 
-
-
+        if elapsed_time >= stop : run == False
+        
 
 
         #Stampa del gioco
@@ -179,7 +179,7 @@ def gioco_1():
     
 
         
-
+    
     return
 
 
@@ -256,7 +256,7 @@ def gioco_2(WIDTH,HEIGTH) :
 
 
 
-
+    
 
 
 
@@ -325,6 +325,8 @@ def gioco_2(WIDTH,HEIGTH) :
 def main(WIDTH,HEIGHT):
     
     gioco_1()
+    
+    
     gioco_2(WIDTH,HEIGHT)
 
 

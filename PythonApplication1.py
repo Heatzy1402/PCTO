@@ -141,9 +141,7 @@ def gioco_1():
               gioco_2(WIDTH,HEIGHT) 
               
            
-           if keys[pygame.K_ESCAPE]:
-            run= False
-            return
+           
         
 
         #Controllo del tempo
@@ -151,7 +149,9 @@ def gioco_1():
             start_time = new_func3() 
             a=False
         elapsed_time = time.time() - start_time
-           
+        if elapsed_time > stop+5:
+            run= False
+            return   
 
 
         #Stampa Stelle
@@ -211,11 +211,9 @@ def gioco_1():
 
 
 
-        print(run)
-        #if elapsed_time >120 : run= False
-        #Stampa del gioco
+        
         draw(player, elapsed_time, stars, point,stop, gamestarter)
-    return
+    
         
         
 def gioco_2(WIDTH,HEIGTH) : 

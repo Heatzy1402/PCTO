@@ -1,6 +1,7 @@
 import pygame
 import time
 import random
+
 pygame.font.init()
 pygame.init()
 infoObject = pygame.display.Info()
@@ -36,7 +37,7 @@ start = pygame.transform.scale(pygame.image.load("start.png"), (WIDTH, HEIGHT))
 
 
 
-def draw(player, elapsed_time, stars ,point,stop, gamestarter):
+def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
     if gamestarter == True :
         WIN.blit(BG1, (0, 0))
         WIN.blit(pannello,(player.x,player.y))
@@ -45,7 +46,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
         point_text = FONT.render(f"Points: {round(point)}", 1, "white")
         WIN.blit(point_text, (WIDTH-150,10))
         for star in stars:
-            WIN.blit(fulmine,(star.x,star.y))  
+            WIN.blit(fulmine,(star.x,star.y))
 
     else:
         WIN.blit(start, (0,0))
@@ -55,11 +56,12 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
         WIN.blit(sfbianco, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
         WIN.blit(finish_text, (0, 0)) 
+        ctr= True
         
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
-        WIN.blit(istruzioni,(WIDTH/2,HEIGHT/2 ))
+        WIN.blit(istruzioni,(WIDTH/2-100,HEIGHT/2 ))
     pygame.display.flip()
     #pygame.display.update() 
 
@@ -110,11 +112,11 @@ def draw2(questions, current_question,gover,false_button,true_button,score):
 
 
 def gioco_1():
-    
+    ctr=False
     gamestarter = False
     run = True
     vab = True
-    stop = 5
+    stop = 10
     star_count=0
     point = 0
     start_time=0
@@ -138,18 +140,19 @@ def gioco_1():
               run = False
               
               pygame.quit()
-              gioco_2(WIDTH,HEIGHT) 
+              
               
            
            
         
-
+        #print(ctr)
         #Controllo del tempo
         if gamestarter == True and a==True :   
             start_time = new_func3() 
             a=False
         elapsed_time = time.time() - start_time
-        if elapsed_time > stop+5:
+        if keys[pygame.K_ESCAPE]:
+            pygame.time.delay(10)
             run= False
             return   
 
@@ -211,30 +214,8 @@ def gioco_1():
 
 
 
-
-
-        #Stampa del gioco
-        draw(player, elapsed_time, stars, point,stop, gamestarter,run)
         
-    
-
-        
-
-    return
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        draw(player, elapsed_time, stars, point,stop, gamestarter)
+        draw(player, elapsed_time, stars, point,stop, gamestarter,ctr)
     
         
         
@@ -243,7 +224,7 @@ def gioco_2(WIDTH,HEIGTH) :
     
 
 
-    
+
 
 
 
@@ -356,8 +337,6 @@ def new_func():
 def main(WIDTH,HEIGHT):
     
     gioco_1()
-    
-    
     gioco_2(WIDTH,HEIGHT)
 
 
@@ -366,6 +345,7 @@ def main(WIDTH,HEIGHT):
 
 if __name__ == "__main__":
     main(WIDTH,HEIGHT,)
+
 
 
 

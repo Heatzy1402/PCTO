@@ -83,6 +83,9 @@ def draw2(questions, current_question,gover,false_button,true_button,score):
         question_text = FONT.render(questions[current_question], True, BLACK)
         question_rect = question_text.get_rect(center=(WIDTH//2, 100))    
         WIN.blit(question_text, question_rect)
+        score_text = FONT.render(f"Punteggio {round(score)}  ", 1, "black")
+        WIN.blit(score_text,(0,0))
+
     if gover == True :
         gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
         gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
@@ -91,9 +94,6 @@ def draw2(questions, current_question,gover,false_button,true_button,score):
         score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
         score_rect = score_text.get_rect(center=(WIDTH//2, 400))
         WIN.blit(score_text, score_rect)
-    
-
-
 
 
     pygame.display.update()
@@ -260,15 +260,18 @@ def gioco_2(WIDTH,HEIGTH) :
                         score+=1
                         current_question+=1
                     else:
-                        gover=True
+                        score-=1
+                        current_question+=1
                 if false_button.collidepoint(event.pos):
                     if not correct_answers[current_question]:
                         score+=1
                         current_question+=1
                     else:
-                        gover=True
+                        score-=1
+                        current_question+=1
                 
-
+        if score<-3 :
+            gover = True
 
         draw2(questions,current_question,gover,false_button,true_button,score)
         

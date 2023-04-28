@@ -54,14 +54,14 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
             
     if elapsed_time > stop :
         WIN.blit(sfbianco, (0, 0))
-        finish_text = FONT.render(f"Time expired, good job you have done {round(point)} points ", 1, "black")
+        finish_text = FONT.render(f"Time expired, good job you have scored {round(point)} points ", 1, "black")
         WIN.blit(finish_text, (0, 0)) 
         ctr= True
         
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
-        WIN.blit(istruzioni,(WIDTH/2-100,HEIGHT/2 ))
+        WIN.blit(istruzioni,(WIDTH/2-220,HEIGHT/2+15 ))
     pygame.display.flip()
     #pygame.display.update() 
 
@@ -126,6 +126,7 @@ def gioco_1():
     star_add_increment= 2000
     start_time=0
     a=True
+    elapsed_time=0
     
     
 
@@ -148,10 +149,11 @@ def gioco_1():
         #print(ctr)
         #Controllo del tempo
         if gamestarter == True and a==True :   
-            start_time = new_func3() 
+            start_time=time.time() 
             a=False
         elapsed_time = time.time() - start_time
-        if keys[pygame.K_ESCAPE]:
+        #print(elapsed_time)
+        if (elapsed_time>20 and gamestarter == True) or keys[pygame.K_ESCAPE]:
             pygame.time.delay(10)
             run= False
             return   
@@ -300,9 +302,7 @@ def new_func4():
     star_x = random.randint(0, WIDTH - STAR_WIDTH)
     return star_x
 
-def new_func3():
-    start_time=time.time()
-    return start_time
+
 
 def new_func2():
     keys = pygame.key.get_pressed()
@@ -345,8 +345,6 @@ def main(WIDTH,HEIGHT):
 
 if __name__ == "__main__":
     main(WIDTH,HEIGHT,)
-
-
 
 
 

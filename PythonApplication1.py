@@ -63,14 +63,14 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
         istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
         WIN.blit(istruzioni,(WIDTH/2-220,HEIGHT/2+15 ))
     pygame.display.flip()
-    #pygame.display.update() 
+     
 
 def draw2(questions, current_question,gover,false_button,true_button,score):
     WIN.fill(SKY_BLUE)
     
 
     
-    if gover == False and current_question<=5:
+    if gover == False and current_question<=10:
         pygame.draw.rect(WIN, RED, false_button)
         pygame.draw.rect(WIN, GREEN, true_button)
         true_text = FONT.render("Vero", True, BLACK)
@@ -235,8 +235,8 @@ def gioco_2(WIDTH,HEIGTH) :
     gover = False
     score = 0
     current_question = 0
-    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?.", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.", "Chi ha un panello fotovoltaico risparmia sulle bollette!", "NON esistono leggi che salvaguardino l'ambiente."]
-    correct_answers = [True, False, True, True, False]
+    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.", "Chi ha un panello fotovoltaico risparmia sulle bollette!", "NON esistono leggi che salvaguardino l'ambiente.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto?","L energia solare ci giunge sotto forma di onde acustiche","L energia solare ci giunge sotto forma di onde corte","Radiazione globale e sinonimo di radiazione effettiva","L albedo e il rapporto tra l energia riflessa e l energia totale in arrivo","L effetto serra non ce sempre stato","La cella di Hudley e in espansione?","L equatore termico corrisponde all equatore geografico"]
+    correct_answers = [True, False, True, True, False,True,False,True,False,True,False,True,False]
     false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
     true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
     

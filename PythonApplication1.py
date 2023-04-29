@@ -9,7 +9,7 @@ infoObject = pygame.display.Info()
 WIDTH =  infoObject.current_w 
 HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Mission Environment")
+pygame.display.set_caption("Minigames")
 elapsed_time=0
 
 SKY_BLUE = (135, 206, 235)
@@ -21,25 +21,25 @@ BLACK= (0,0,0)
 
 
 
-PLAYER_WIDTH = 100
-PLAYER_HEIGHT = 120
+PLAYER_WIDTH = 80
+PLAYER_HEIGHT = 100
 PLAYER_VEL = 7
-STAR_WIDTH = 100
-STAR_HEIGHT = 90
+STAR_WIDTH = 80
+STAR_HEIGHT = 70
 STAR_VEL = 3
 FONT = pygame.font.SysFont("comicsans", 30)
 
-BG1 = pygame.transform.scale(pygame.image.load("eb.jpg"), (WIDTH, HEIGHT+100))
+sfondo_no_omino = pygame.transform.scale(pygame.image.load("no_omino.jpg"), (WIDTH+100, HEIGHT+100))
 sfbianco = pygame.transform.scale(pygame.image.load("sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
 fulmine = pygame.transform.scale(pygame.image.load("fulmine.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
 pannello = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
-start = pygame.transform.scale(pygame.image.load("start.png"), (WIDTH, HEIGHT))
-
+start = pygame.transform.scale(pygame.image.load("schermata_iniziale.jpg"), (WIDTH, HEIGHT))
+sfondo_omino= pygame.transform.scale(pygame.image.load("con_omino.jpg"), (WIDTH, HEIGHT))
 
 
 def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
     if gamestarter == True :
-        WIN.blit(BG1, (0, 0))
+        WIN.blit(sfondo_no_omino, (0, 0))
         WIN.blit(pannello,(player.x,player.y))
         time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
         WIN.blit(time_text, (10, 10))
@@ -60,17 +60,17 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
         
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
-        istruzioni = FONT.render(f" Premi Spacebar per iniziare a giocare", 30, "black")
-        WIN.blit(istruzioni,(WIDTH/2-220,HEIGHT/2+15 ))
+        
+       
     pygame.display.flip()
      
 
-def draw2(questions, current_question,gover,false_button,true_button,score):
+def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco):
     WIN.fill(SKY_BLUE)
     
 
     
-    if gover == False and current_question<=10:
+    if gover == False and current_question<13:
         pygame.draw.rect(WIN, RED, false_button)
         pygame.draw.rect(WIN, GREEN, true_button)
         true_text = FONT.render("Vero", True, BLACK)
@@ -87,14 +87,14 @@ def draw2(questions, current_question,gover,false_button,true_button,score):
         WIN.blit(score_text,(0,0))
 
     if gover == True :
-        gameover_text = FONT.render("Game Over! Il tuo punteggio e': " + str(score), True, BLACK)
+        gameover_text = FONT.render("Game Over! ", True, BLACK)
         gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
         WIN.fill(RED)
         WIN.blit(gameover_text, gameover_rect)
-        score_text = FONT.render("Punteggio: " + str(score), True, BLACK)
-        score_rect = score_text.get_rect(center=(WIDTH//2, 400))
-        WIN.blit(score_text, score_rect)
-
+        
+        
+    if fine_gioco:
+        WIN.blit(sfondo_omino,(0,0))
 
     pygame.display.update()
    
@@ -230,7 +230,7 @@ def gioco_2(WIDTH,HEIGTH) :
 
 
 
-
+    fine_gioco= False
     running = True
     gover = False
     score = 0
@@ -272,8 +272,9 @@ def gioco_2(WIDTH,HEIGTH) :
                 
         if score<-3 :
             gover = True
-
-        draw2(questions,current_question,gover,false_button,true_button,score)
+        if current_question>12:
+            fine_gioco= True
+        draw2(questions,current_question,gover,false_button,true_button,score,fine_gioco)
         
         
         

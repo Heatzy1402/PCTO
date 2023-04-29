@@ -9,7 +9,7 @@ infoObject = pygame.display.Info()
 WIDTH =  infoObject.current_w 
 HEIGHT =  infoObject.current_h- 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Minigames")
+pygame.display.set_caption("Mission Environment")
 elapsed_time=0
 
 SKY_BLUE = (135, 206, 235)
@@ -21,15 +21,15 @@ BLACK= (0,0,0)
 
 
 
-PLAYER_WIDTH = 80
-PLAYER_HEIGHT = 100
+PLAYER_WIDTH = 100
+PLAYER_HEIGHT = 120
 PLAYER_VEL = 7
-STAR_WIDTH = 80
-STAR_HEIGHT = 70
+STAR_WIDTH = 100
+STAR_HEIGHT = 90
 STAR_VEL = 3
 FONT = pygame.font.SysFont("comicsans", 30)
 
-BG1 = pygame.transform.scale(pygame.image.load("background1.jpeg"), (WIDTH, HEIGHT))
+BG1 = pygame.transform.scale(pygame.image.load("eb.jpg"), (WIDTH, HEIGHT+100))
 sfbianco = pygame.transform.scale(pygame.image.load("sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
 fulmine = pygame.transform.scale(pygame.image.load("fulmine.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
 pannello = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))

@@ -28,7 +28,7 @@ STAR_WIDTH = 80
 STAR_HEIGHT = 70
 STAR_VEL = 3
 FONT = pygame.font.SysFont("comicsans", 30)
-
+punteggio_tot=0
 sfondo_no_omino = pygame.transform.scale(pygame.image.load("no_omino.jpg"), (WIDTH+100, HEIGHT+100))
 sfbianco = pygame.transform.scale(pygame.image.load("sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
 fulmine = pygame.transform.scale(pygame.image.load("fulmine.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
@@ -37,7 +37,7 @@ start = pygame.transform.scale(pygame.image.load("schermata_iniziale.jpg"), (WID
 sfondo_omino= pygame.transform.scale(pygame.image.load("con_omino.jpg"), (WIDTH, HEIGHT))
 
 
-def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
+def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == True :
         WIN.blit(sfondo_no_omino, (0, 0))
         WIN.blit(pannello,(player.x,player.y))
@@ -53,10 +53,10 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
         
             
     if elapsed_time > stop :
-        WIN.blit(sfbianco, (0, 0))
+        WIN.blit(sfondo_omino, (0, 0))
         finish_text = FONT.render(f"Time expired, good job you have scored {round(point)} points ", 1, "black")
         WIN.blit(finish_text, (0, 0)) 
-        ctr= True
+        
         
     if gamestarter == False :
         WIN.blit(start, (0,0)) 
@@ -65,7 +65,7 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter,ctr):
     pygame.display.flip()
      
 
-def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco):
+def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot):
     WIN.fill(SKY_BLUE)
     
 
@@ -111,8 +111,9 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
     
 
 
-def gioco_1():
-    ctr=False
+def gioco_1(puntegggio_tot):
+    
+
     gamestarter = False
     run = True
     vab = True
@@ -146,7 +147,7 @@ def gioco_1():
            
            
         
-        #print(ctr)
+        
         #Controllo del tempo
         if gamestarter == True and a==True :   
             start_time=time.time() 
@@ -194,6 +195,7 @@ def gioco_1():
                 elif  star.colliderect(player) : 
                     stars.remove(star)
                     point=point+1
+                    punteggio_tot=point
             keys = new_func2()
             if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
                 player.x -= PLAYER_VEL
@@ -217,11 +219,11 @@ def gioco_1():
 
 
         
-        draw(player, elapsed_time, stars, point,stop, gamestarter,ctr)
+        draw(player, elapsed_time, stars, point,stop, gamestarter)
     
         
         
-def gioco_2(WIDTH,HEIGTH) : 
+def gioco_2(WIDTH,HEIGTH,punteggio_tot) : 
 
     
 
@@ -273,8 +275,9 @@ def gioco_2(WIDTH,HEIGTH) :
         if score<-3 :
             gover = True
         if current_question>12:
+            punteggio_tot=punteggio_tot+score
             fine_gioco= True
-        draw2(questions,current_question,gover,false_button,true_button,score,fine_gioco)
+        draw2(questions,current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot)
         
         
         
@@ -338,17 +341,17 @@ def new_func():
 
 
 
-def main(WIDTH,HEIGHT):
+def main(WIDTH,HEIGHT,punteggio_tot):
     
-    gioco_1()
-    gioco_2(WIDTH,HEIGHT)
+    gioco_1(punteggio_tot)
+    gioco_2(WIDTH,HEIGHT,punteggio_tot)
 
 
 
 
 
 if __name__ == "__main__":
-    main(WIDTH,HEIGHT,)
+    main(WIDTH,HEIGHT,punteggio_tot)
 
 
 

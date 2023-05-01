@@ -35,15 +35,16 @@ fulmine = pygame.transform.scale(pygame.image.load("fulmine.jpeg"), (STAR_WIDTH+
 pannello = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
 start = pygame.transform.scale(pygame.image.load("schermata_iniziale.jpg"), (WIDTH, HEIGHT))
 sfondo_omino= pygame.transform.scale(pygame.image.load("con_omino.jpg"), (WIDTH, HEIGHT))
-
+game_over= pygame.transform.scale(pygame.image.load("gameover.png"), (WIDTH, HEIGHT))
+schermata_finale= pygame.transform.scale(pygame.image.load("fine_gioco.png"), (WIDTH, HEIGHT))
 
 def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == True :
         WIN.blit(sfondo_no_omino, (0, 0))
         WIN.blit(pannello,(player.x,player.y))
-        time_text = FONT.render(f"Time: {round(elapsed_time)}s", 1, "white")
+        time_text = FONT.render(f"Tempo: {round(elapsed_time)}s", 1, "white")
         WIN.blit(time_text, (10, 10))
-        point_text = FONT.render(f"Points: {round(point)}", 1, "white")
+        point_text = FONT.render(f"Punti: {round(point)}", 1, "white")
         WIN.blit(point_text, (WIDTH-150,10))
         for star in stars:
             WIN.blit(fulmine,(star.x,star.y))
@@ -54,8 +55,8 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):
             
     if elapsed_time > stop :
         WIN.blit(sfondo_omino, (0, 0))
-        finish_text = FONT.render(f"Time expired, good job you have scored {round(point)} points ", 1, "black")
-        WIN.blit(finish_text, (0, 0)) 
+        finish_text = FONT.render(f"Ottimo lavoro hai fatto  {round(point)} punti !", 1, "white")
+        WIN.blit(finish_text, (WIDTH/2-100, HEIGHT/2+150)) 
         
         
     if gamestarter == False :
@@ -87,14 +88,15 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
         WIN.blit(score_text,(0,0))
 
     if gover == True :
-        gameover_text = FONT.render("Game Over! ", True, BLACK)
-        gameover_rect = gameover_text.get_rect(center=(WIDTH//2, HEIGHT//2))
-        WIN.fill(RED)
-        WIN.blit(gameover_text, gameover_rect)
+        
+        WIN.blit(game_over,(0,0))
         
         
     if fine_gioco:
-        WIN.blit(sfondo_omino,(0,0))
+        punteggio_tot=punteggio_tot+score
+        punteggio = FONT.render(f"Punteggio totale : {round(punteggio_tot)}  ", 1, "black")
+        WIN.blit(schermata_finale,(0,0))
+        WIN.blit(punteggio,(WIDTH/2-75,HEIGHT/2))
 
     pygame.display.update()
    
@@ -275,7 +277,7 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
         if score<-3 :
             gover = True
         if current_question>12:
-            punteggio_tot=punteggio_tot+score
+            
             fine_gioco= True
         draw2(questions,current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot)
         

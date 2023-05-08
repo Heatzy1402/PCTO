@@ -1,25 +1,23 @@
-import pygame
+import pygame   #Libreria necessarria per lo sviluppo di videogiochi su python
 import time
 import random
 
-pygame.font.init()
-pygame.init()
+pygame.font.init() #Funzione del modulo pygame che si occuppa di inizializzare il sottosistema di rendering
+pygame.init() #Funzione del modulo pygame che si occupa di inizializzare vari sottosistemi(grafica,input,audio)
 infoObject = pygame.display.Info()
 
-WIDTH =  infoObject.current_w 
-HEIGHT =  infoObject.current_h- 100
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Minigames")
-elapsed_time=0
+WIDTH =  infoObject.current_w  #Prelevo le informazioni relative alla larghezza e altezza del monitor dell'utente
+HEIGHT =  infoObject.current_h- 100  #E' necessario ridurre l'altezza della finestra per mostrare a schermo anche le scorciatoie di finestra(chiusura,ridimensionamento,minimizzazione)
+WIN = pygame.display.set_mode((WIDTH, HEIGHT)) #Asseggno alla variabile WIN la finestra di gioco con i parametri di altezza e larghezza del monitor 
+pygame.display.set_caption("Mission Environment")
 
-SKY_BLUE = (135, 206, 235)
+elapsed_time=0 #Inizializzo la variabile tempo trascorso
+  
+SKY_BLUE = (135, 206, 235) #Assegno a diverse variabili i preset(RGB) per avere determinati colori
 WHITE = (255, 255, 255)    
 GREEN = (0, 255, 0)    
 RED = (255, 0, 0)    
-BLACK= (0,0,0)   
-
-
-
+BLACK= (0,0,0) 
 
 PLAYER_WIDTH = 160
 PLAYER_HEIGHT = 180
@@ -27,6 +25,8 @@ PLAYER_VEL = 7
 STAR_WIDTH = 100
 STAR_HEIGHT = 90
 STAR_VEL = 3
+
+
 FONT = pygame.font.SysFont("comicsans", 30)
 punteggio_tot=0
 sfondo_no_omino = pygame.transform.scale(pygame.image.load("no_omino.jpg"), (WIDTH+100, HEIGHT+100))
@@ -71,7 +71,7 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
     
 
     
-    if gover == False and current_question<13:
+    if gover == False and current_question<11:
         pygame.draw.rect(WIN, RED, false_button)
         pygame.draw.rect(WIN, GREEN, true_button)
         true_text = FONT.render("Vero", True, BLACK)
@@ -97,7 +97,7 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
         punteggio = FONT.render(f"Punteggio totale : {round(punteggio_tot)}  ", 1, "black")
         WIN.blit(schermata_finale,(0,0))
         WIN.blit(punteggio,(WIDTH/2-75,HEIGHT/2))
-
+    
     pygame.display.update()
    
     
@@ -239,8 +239,8 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
     gover = False
     score = 0
     current_question = 0
-    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.", "Chi ha un panello fotovoltaico risparmia sulle bollette!", "NON esistono leggi che salvaguardino l'ambiente.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto?","L energia solare ci giunge sotto forma di onde acustiche","L energia solare ci giunge sotto forma di onde corte","Radiazione globale e sinonimo di radiazione effettiva","L albedo e il rapporto tra l energia riflessa e l energia totale in arrivo","L effetto serra non ce sempre stato","La cella di Hudley e in espansione?","L equatore termico corrisponde all equatore geografico"]
-    correct_answers = [True, False, True, True, False,True,False,True,False,True,False,True,False]
+    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto?","L energia solare ci giunge sotto forma di onde acustiche","L energia solare ci giunge sotto forma di onde corte","Radiazione globale e sinonimo di radiazione effettiva","L albedo e il rapporto tra l energia riflessa e l energia totale in arrivo","L effetto serra non ce sempre stato","La cella di Hudley e in espansione?","L equatore termico corrisponde all equatore geografico"]
+    correct_answers = [True, False, True,True,False,True,False,True,False,True,False]
     false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
     true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
     
@@ -255,30 +255,33 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
 
 
     while running:
+        if not fine_gioco:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if true_button.collidepoint(event.pos):
+                        if correct_answers[current_question]:
+                            score+=1
+                            current_question+=1
+                        else:
+                            score-=1
+                            current_question+=1
+                    if false_button.collidepoint(event.pos):
+                        if not correct_answers[current_question]:
+                            score+=1
+                            current_question+=1
+                        else:
+                            score-=1
+                            current_question+=1
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if true_button.collidepoint(event.pos):
-                    if correct_answers[current_question]:
-                        score+=1
-                        current_question+=1
-                    else:
-                        score-=1
-                        current_question+=1
-                if false_button.collidepoint(event.pos):
-                    if not correct_answers[current_question]:
-                        score+=1
-                        current_question+=1
-                    else:
-                        score-=1
-                        current_question+=1
-                
+                if event.type == pygame.QUIT:
+                    running = False       
         if score<-3 :
             gover = True
-        if current_question>12:
+        if current_question>10:
+           fine_gioco = True 
             
-            fine_gioco= True
         draw2(questions,current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot)
         
         
@@ -311,8 +314,6 @@ def new_func4():
     star_x = random.randint(0, WIDTH - STAR_WIDTH)
     return star_x
 
-
-
 def new_func2():
     keys = pygame.key.get_pressed()
     return keys
@@ -325,7 +326,13 @@ def new_func():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 
-   
+def main(WIDTH,HEIGHT,punteggio_tot):
+    
+    gioco_1(punteggio_tot)
+    gioco_2(WIDTH,HEIGHT,punteggio_tot)
+
+if __name__ == "__main__":
+    main(WIDTH,HEIGHT,punteggio_tot)   
 
 
 
@@ -343,17 +350,13 @@ def new_func():
 
 
 
-def main(WIDTH,HEIGHT,punteggio_tot):
-    
-    gioco_1(punteggio_tot)
-    gioco_2(WIDTH,HEIGHT,punteggio_tot)
 
 
 
 
 
-if __name__ == "__main__":
-    main(WIDTH,HEIGHT,punteggio_tot)
+
+
 
 
 

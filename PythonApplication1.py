@@ -12,14 +12,17 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT)) #Asseggno alla variabile WIN la f
 pygame.display.set_caption("Mission Environment")
 
 elapsed_time=0 #Inizializzo la variabile tempo trascorso
-  
+punteggio_tot=0 #Inizializzo il punteggio inziale
+
 SKY_BLUE = (135, 206, 235) #Assegno a diverse variabili i preset(RGB) per avere determinati colori
 WHITE = (255, 255, 255)    
 GREEN = (0, 255, 0)    
 RED = (255, 0, 0)    
 BLACK= (0,0,0) 
+FONT = pygame.font.SysFont("comicsans", 30)  #Assegno il font alla variabile FONT
 
-PLAYER_WIDTH = 160
+
+PLAYER_WIDTH = 160   #Variabili dimensioni del player e dei lampi
 PLAYER_HEIGHT = 180
 PLAYER_VEL = 7
 STAR_WIDTH = 100
@@ -27,9 +30,7 @@ STAR_HEIGHT = 90
 STAR_VEL = 3
 
 
-FONT = pygame.font.SysFont("comicsans", 30)
-punteggio_tot=0
-sfondo_no_omino = pygame.transform.scale(pygame.image.load("no_omino.jpg"), (WIDTH+100, HEIGHT+100))
+sfondo_no_omino = pygame.transform.scale(pygame.image.load("no_omino.jpg"), (WIDTH+100, HEIGHT+100))    #Variabili contenenti gli elementi grafici
 sfbianco = pygame.transform.scale(pygame.image.load("sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
 fulmine = pygame.transform.scale(pygame.image.load("fulmine.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
 pannello = pygame.transform.scale(pygame.image.load("pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
@@ -37,6 +38,8 @@ start = pygame.transform.scale(pygame.image.load("schermata_iniziale.jpg"), (WID
 sfondo_omino= pygame.transform.scale(pygame.image.load("con_omino.jpg"), (WIDTH, HEIGHT))
 game_over= pygame.transform.scale(pygame.image.load("gameover.png"), (WIDTH, HEIGHT))
 schermata_finale= pygame.transform.scale(pygame.image.load("fine_gioco.png"), (WIDTH, HEIGHT))
+
+
 
 def draw(player, elapsed_time, stars ,point,stop, gamestarter):
     if gamestarter == True :
@@ -101,20 +104,8 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
     pygame.display.update()
    
     
-
-    
-
-
-
-
-
-
-
-    
-
-
 def gioco_1(puntegggio_tot):
-    
+   
 
     gamestarter = False
     run = True
@@ -223,8 +214,7 @@ def gioco_1(puntegggio_tot):
         
         draw(player, elapsed_time, stars, point,stop, gamestarter)
     
-        
-        
+
 def gioco_2(WIDTH,HEIGTH,punteggio_tot) : 
 
     
@@ -288,7 +278,20 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
         
             
             
-    pygame.quit()    
+    pygame.quit() 
+
+
+
+
+
+    
+
+
+
+    
+        
+        
+   
 
         
   

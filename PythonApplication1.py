@@ -41,32 +41,31 @@ schermata_finale= pygame.transform.scale(pygame.image.load("fine_gioco.png"), (W
 
 
 
-def draw(player, elapsed_time, stars ,point,stop, gamestarter):
-    if gamestarter == True :
-        WIN.blit(sfondo_no_omino, (0, 0))
-        WIN.blit(pannello,(player.x,player.y))
-        time_text = FONT.render(f"Tempo: {round(elapsed_time)}s", 1, "white")
-        WIN.blit(time_text, (10, 10))
+def draw(player, elapsed_time, stars ,point,stop, gamestarter):   #Funzione esterna che si occupa di stampare a schermo il primo gioco
+    if gamestarter == True :  #Se il giocatore preme spacebar il gioco parte e vengono mostrati a schermo il pannello mobile e i fulmini cadenti
+        WIN.blit(sfondo_no_omino, (0, 0)) #Stampo il background
+        WIN.blit(pannello,(player.x,player.y)) #Stampo il pannello mosso dal giocatore
+        time_text = FONT.render(f"Tempo: {round(elapsed_time)}s", 1, "white") 
+        WIN.blit(time_text, (10, 10)) #Stampo il tempo passato a schermo
         point_text = FONT.render(f"Punti: {round(point)}", 1, "white")
-        WIN.blit(point_text, (WIDTH-150,10))
-        for star in stars:
+        WIN.blit(point_text, (WIDTH-150,10)) #Stampo il punteggio a schermo
+        for star in stars:   #Stampo i fulmini nella lista
             WIN.blit(fulmine,(star.x,star.y))
 
-    else:
-        WIN.blit(start, (0,0))
+    
         
             
-    if elapsed_time > stop :
-        WIN.blit(sfondo_omino, (0, 0))
-        finish_text = FONT.render(f"Ottimo lavoro hai fatto  {round(point)} punti !", 1, "white")
-        WIN.blit(finish_text, (WIDTH/2-100, HEIGHT/2+150)) 
+    if elapsed_time > stop : #Se il tempo di gioco finisce si passa ad un'altra schermata
+        WIN.blit(sfondo_omino, (0, 0)) 
+        finish_text = FONT.render(f"Ottimo lavoro hai fatto  {round(point)} punti !", 1, "white")#
+        WIN.blit(finish_text, (20 , HEIGHT/2+150)) #Stampo lo sfondo e il punteggio
         
         
-    if gamestarter == False :
+    if gamestarter == False : #Schermata iniziale
         WIN.blit(start, (0,0)) 
         
        
-    pygame.display.flip()
+    pygame.display.flip() #Aggiorno lo schermo
      
 
 def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot):
@@ -104,13 +103,13 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
     pygame.display.update()
    
     
-def gioco_1(puntegggio_tot):
+def gioco_1(puntegggio_tot): #Funzione che si occupa del primo minigioco
    
-
+    elapsed_time=0
     gamestarter = False
     run = True
     vab = True
-    stop = 10
+    stop = 40
     star_count=0
     point = 0
     start_time=0
@@ -120,7 +119,7 @@ def gioco_1(puntegggio_tot):
     star_add_increment= 2000
     start_time=0
     a=True
-    elapsed_time=0
+    
     
     
 
@@ -146,8 +145,9 @@ def gioco_1(puntegggio_tot):
             start_time=time.time() 
             a=False
         elapsed_time = time.time() - start_time
-        #print(elapsed_time)
-        if (elapsed_time>20 and gamestarter == True) or keys[pygame.K_ESCAPE]:
+        
+
+        if (elapsed_time>stop+15 and gamestarter == True) or keys[pygame.K_ESCAPE]:
             pygame.time.delay(10)
             run= False
             return   
@@ -163,7 +163,7 @@ def gioco_1(puntegggio_tot):
                     stars.append(star)                   
                 
 
-                star_add_increment = max(200, star_add_increment - 50)
+                star_add_increment = max(1200, star_add_increment - 50)
                 star_count = 0
         
                 

@@ -104,32 +104,32 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
    
     
 def gioco_1(puntegggio_tot): #Funzione che si occupa del primo minigioco
-   
-    elapsed_time=0
-    gamestarter = False
+    elapsed_time=0 #Inizializzo il counter del tempo
+    a=True #Variabili di lavoro
+    gamestarter = False 
     run = True
     vab = True
-    stop = 40
-    star_count=0
-    point = 0
-    start_time=0
-    stars = []
-    clock = new_func1() 
-    player = new_func()
-    star_add_increment= 2000
-    start_time=0
-    a=True
+    stop = 40 #Variabile che controlla il tempo di gioco
+    star_count=0 #Inizializzo la variabile relativa ai fulmini
+    point = 0 #Inizializzo il punteggio
+    start_time=0 #Inizializzo il tempo in cui il player inizia a giocare
+    stars = [] #Creo la lista che contiene il fulmini
+    clock = time_1() #Assegno alla variabile clock il risultato della funzione  time_1()
+    player = giocatore() #Creo il player attraverso una funzione esterna
+    star_add_increment= 2000 #Variabile che si occupa di gestire il timing del drop dei fulmini
+    
+    
     
     
     
 
-    while run:
+    while run:   #Ciclo del gioco
         
         
-        keys = new_func2()
+        keys = tasti() #Assegno alla variabile keys i tasti premuti
         
-        #Chiusura Gioco#
-        for event in pygame.event.get():    
+        
+        for event in pygame.event.get():    #Gestione della chiusura della finestra
            if event.type == pygame.QUIT :
               run = False
               
@@ -140,37 +140,37 @@ def gioco_1(puntegggio_tot): #Funzione che si occupa del primo minigioco
            
         
         
-        #Controllo del tempo
-        if gamestarter == True and a==True :   
+       
+        if gamestarter == True and a==True :    #Controllo del tempo del gioco
             start_time=time.time() 
             a=False
         elapsed_time = time.time() - start_time
         
 
-        if (elapsed_time>stop+15 and gamestarter == True) or keys[pygame.K_ESCAPE]:
-            pygame.time.delay(10)
-            run= False
-            return   
+        if (elapsed_time>stop+15 and gamestarter == True) or keys[pygame.K_ESCAPE]: #Se il gioco e' terminato passo al secondo gioco, il tasto escape e' stato messo per facilitare la fase di debug
+            pygame.time.delay(10) #Aggiungo del delay
+            run= False #Fermo il ciclo
+            return   #Esco dalla funzione
 
 
-        #Stampa Stelle
-        star_count += clock.tick(60)
-        elapsed_time = time.time() - start_time
-        if star_count > star_add_increment:
-                for _ in range(3):
+        
+        star_count += clock.tick(60) #Gestisco il valore della variabili dei fulmini attraverso il clock del computer
+        elapsed_time = time.time() - start_time #Calcolo il tempo trascorso
+        if star_count > star_add_increment: #Stampo fulmini dopo un numero di tick
+                for _ in range(3): #Creo una posizione random dove stampare i fulmini
                     star_x = random.randint(0, WIDTH - STAR_WIDTH)
                     star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
                     stars.append(star)                   
                 
 
-                star_add_increment = max(1200, star_add_increment - 50)
+                star_add_increment = max(1200, star_add_increment - 50) #Modifico il valore con cui vengono stampati i fulmini 
                 star_count = 0
         
                 
                 
-        #Tasto d'inizio         
+               
             
-        if keys[pygame.K_SPACE] and vab == True :             
+        if keys[pygame.K_SPACE] and vab == True :    #Inizio del gioco dopo aver premuto spacebar         
            gamestarter = True
            vab = False  
         
@@ -179,20 +179,20 @@ def gioco_1(puntegggio_tot): #Funzione che si occupa del primo minigioco
         
         
 
-        #Gioco numero 1
-        if  gamestarter == True and elapsed_time < stop:    
-            for star in stars[:]:
-                star.y += STAR_VEL
-                if star.y > HEIGHT-50:
+        
+        if  gamestarter == True and elapsed_time < stop:    #Meccanismo del gioco
+            for star in stars[:]: #Per ogni fulmine nella lista regolo la meccanica di gioco
+                star.y += STAR_VEL #Incremento la sua y
+                if star.y > HEIGHT-50: #Se arriva a fondo schermo la rimuovo
                     stars.remove(star)
-                elif  star.colliderect(player) : 
+                elif  star.colliderect(player) : #Se entra in collisione con il player la rimuovo dalla lista
                     stars.remove(star)
-                    point=point+1
+                    point=point+1 #Incremento il punteggio
                     punteggio_tot=point
-            keys = new_func2()
-            if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
+            keys = tasti()
+            if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:  #Regolo il movimento del giocatore verso sinistra senza farlo uscire dallo schermo
                 player.x -= PLAYER_VEL
-            if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
+            if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH: #Regolo il movimento del giocatore verso destra senza farlo uscire dallo schermo
                 player.x += PLAYER_VEL
         
 
@@ -212,7 +212,7 @@ def gioco_1(puntegggio_tot): #Funzione che si occupa del primo minigioco
 
 
         
-        draw(player, elapsed_time, stars, point,stop, gamestarter)
+        draw(player, elapsed_time, stars, point,stop, gamestarter) #Chiamo la funzione che si occupa  di stampare a schermo il primo gioco
     
 
 def gioco_2(WIDTH,HEIGTH,punteggio_tot) : 
@@ -317,15 +317,15 @@ def new_func4():
     star_x = random.randint(0, WIDTH - STAR_WIDTH)
     return star_x
 
-def new_func2():
+def tasti():
     keys = pygame.key.get_pressed()
     return keys
 
-def new_func1():
+def time_1():
     clock = pygame.time.Clock()
     return clock
 
-def new_func():
+def giocatore():
     player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
     return player
 

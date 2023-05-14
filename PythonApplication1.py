@@ -75,7 +75,7 @@ def draw2(questions, current_question,gover,false_button,true_button,score,fine_
     
 
     
-    if gover == False and current_question<11:  #se il quiz è in esecuzione stampare na determinata schermata
+    if gover == False and current_question<11:  #se il quiz ï¿½ in esecuzione stampare na determinata schermata
         pygame.draw.rect(WIN, RED, false_button) #stampa i bottoni vero/falso
         pygame.draw.rect(WIN, GREEN, true_button)
         true_text = FONT.render("Vero", True, BLACK) #scrive vero sul bottone e fa centrare la scitta
@@ -231,8 +231,13 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
     gover = False
     score = 0
     current_question = 0
-    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte", "Pannello fotovoltaico e solare sono la stessa cosa", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto","L'energia solare ci giunge sotto forma di onde acustiche","L'energia solare ci giunge sotto forma di onde corte","Radiazione globale e' sinonimo di radiazione effettiva","L'albedo e il rapporto tra l'energia riflessa e l'energia totale in arrivo","L'effetto serra c'e' sempre stato","La cella di Hudley e' in espansione","L'equatore termico corrisponde all'equatore geografico"]
+
+    #array con le domande e le corrispettive risposte corrette
+    
+
+    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte", "Pannello fotovoltaico e solare sono la stessa cosa", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto","L'energia solare ci giunge sotto forma di onde acustiche","L'energia solare ci giunge sotto forma di onde corte","Radiazione globale e' sinonimo di radiazione effettiva","L'albedo e' il rapporto tra l'energia riflessa e l'energia totale in arrivo","L'effetto serra c'e' sempre stato","La cella di Hudley e' in espansione","L'equatore termico corrisponde all'equatore geografico"]
     correct_answers = [True, False, True,True,False,True,False,True,True,True,False]
+
     false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
     true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
     
@@ -246,14 +251,14 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
     
 
 
-    while running:#quando il gioco è in esecuzione 
+    while running:#quando il gioco ï¿½ in esecuzione 
         if not fine_gioco:
             for event in pygame.event.get(): #per ogni evento che accade in esecuzione
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.MOUSEBUTTONDOWN:#se si preme con il mouse nell'area delimitata dai rettangoli per le risposte
                     if true_button.collidepoint(event.pos):
-                        if correct_answers[current_question]: #e la risposta data coincide è ccon l'array delle risposte corrette assegni 1pt altrimenti ne sottrai uno
+                        if correct_answers[current_question]: #e la risposta data coincide ï¿½ ccon l'array delle risposte corrette assegni 1pt altrimenti ne sottrai uno
                             score+=1
                             current_question+=1
                         else:

@@ -68,28 +68,28 @@ def draw(player, elapsed_time, stars ,point,stop, gamestarter):   #Funzione este
     pygame.display.flip() #Aggiorno lo schermo
      
 
-def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot):
+def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot): #funzione esterna che si occupa della grafica del secondo gioco
     WIN.fill(SKY_BLUE)
     
 
     
-    if gover == False and current_question<11:
-        pygame.draw.rect(WIN, RED, false_button)
+    if gover == False and current_question<11:  #se il quiz è in esecuzione stampare na determinata schermata
+        pygame.draw.rect(WIN, RED, false_button) #stampa i bottoni vero/falso
         pygame.draw.rect(WIN, GREEN, true_button)
-        true_text = FONT.render("Vero", True, BLACK)
+        true_text = FONT.render("Vero", True, BLACK) #scrive vero sul bottone e fa centrare la scitta
         true_rect = true_text.get_rect(center=true_button.center)
         WIN.blit(true_text, true_rect)
-        false_text = FONT.render("Falso", True, BLACK)
+        false_text = FONT.render("Falso", True, BLACK)#scrive falso sul bottone e fa centrare la scritta
         false_rect = false_text.get_rect(center=false_button.center)
         WIN.blit(false_text, false_rect)
         pygame.draw.rect(WIN, SKY_BLUE, (0, 0, WIDTH, 150))  # Copre la domanda precedente con il colore dello sfondo
-        question_text = FONT.render(questions[current_question], True, BLACK)
+        question_text = FONT.render(questions[current_question], True, BLACK) #stampa la domanda sullo schermo e assegna nelle righe successive la posizione
         question_rect = question_text.get_rect(center=(WIDTH//2, 100))    
         WIN.blit(question_text, question_rect)
-        score_text = FONT.render(f"Punteggio {round(score)}  ", 1, "black")
+        score_text = FONT.render(f"Punteggio {round(score)}  ", 1, "black")#stampa il punteggio
         WIN.blit(score_text,(0,0))
 
-    if gover == True :
+    if gover == True : #se sei in gameover stampi la schermata gameover
         
         WIN.blit(game_over,(0,0))
         
@@ -223,12 +223,13 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
 
 
 
-
+    #inizializzo le variabili booleane di esecuzione
     fine_gioco= False
     running = True
     gover = False
     score = 0
     current_question = 0
+    #array con le domande e le corrispettive risposte corrette
     questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto?","L energia solare ci giunge sotto forma di onde acustiche","L energia solare ci giunge sotto forma di onde corte","Radiazione globale e sinonimo di radiazione effettiva","L albedo e il rapporto tra l energia riflessa e l energia totale in arrivo","L effetto serra non ce sempre stato","La cella di Hudley e in espansione?","L equatore termico corrisponde all equatore geografico"]
     correct_answers = [True, False, True,True,False,True,False,True,False,True,False]
     false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
@@ -244,14 +245,14 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
     
 
 
-    while running:
+    while running:#quando il gioco è in esecuzione 
         if not fine_gioco:
-            for event in pygame.event.get():
+            for event in pygame.event.get(): #per ogni evento che accade in esecuzione
                 if event.type == pygame.QUIT:
                     running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN:#se si preme con il mouse nell'area delimitata dai rettangoli per le risposte
                     if true_button.collidepoint(event.pos):
-                        if correct_answers[current_question]:
+                        if correct_answers[current_question]: #e la risposta data coincide è ccon l'array delle risposte corrette assegni 1pt altrimenti ne sottrai uno
                             score+=1
                             current_question+=1
                         else:

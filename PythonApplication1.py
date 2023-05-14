@@ -2,6 +2,8 @@ import pygame   #Libreria necessarria per lo sviluppo di videogiochi su python
 import time
 import random
 
+#-*- coding: utf-8 -*-   
+
 pygame.font.init() #Funzione del modulo pygame che si occuppa di inizializzare il sottosistema di rendering
 pygame.init() #Funzione del modulo pygame che si occupa di inizializzare vari sottosistemi(grafica,input,audio)
 infoObject = pygame.display.Info()
@@ -229,9 +231,8 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
     gover = False
     score = 0
     current_question = 0
-    #array con le domande e le corrispettive risposte corrette
-    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte?", "Pannello fotovoltaico e solare sono la stessa cosa.", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto?","L energia solare ci giunge sotto forma di onde acustiche","L energia solare ci giunge sotto forma di onde corte","Radiazione globale e sinonimo di radiazione effettiva","L albedo e il rapporto tra l energia riflessa e l energia totale in arrivo","L effetto serra non ce sempre stato","La cella di Hudley e in espansione?","L equatore termico corrisponde all equatore geografico"]
-    correct_answers = [True, False, True,True,False,True,False,True,False,True,False]
+    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte", "Pannello fotovoltaico e solare sono la stessa cosa", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto","L'energia solare ci giunge sotto forma di onde acustiche","L'energia solare ci giunge sotto forma di onde corte","Radiazione globale e' sinonimo di radiazione effettiva","L'albedo e il rapporto tra l'energia riflessa e l'energia totale in arrivo","L'effetto serra c'e' sempre stato","La cella di Hudley e' in espansione","L'equatore termico corrisponde all'equatore geografico"]
+    correct_answers = [True, False, True,True,False,True,False,True,True,True,False]
     false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
     true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
     

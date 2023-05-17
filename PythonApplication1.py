@@ -1,4 +1,4 @@
-import pygame   #Libreria necessarria per lo sviluppo di videogiochi su python
+import pygame   #Libreria necessaria per lo sviluppo di videogiochi su python
 import time
 import random
 

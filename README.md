@@ -10,11 +10,34 @@ Prima di eseguire il gioco, assicurati di avere Python installato nel tuo sistem
 
 ```bash
 pip install pygame
-
+```
 ## Istruzioni
 
 Per giocare al minigioco, esegui il seguente comando nel terminale:
 
 ```bash
-python main.py
+python3 MissionEnvironment.py
+```
+
+# Istruzioni del Minigioco
+
+## Fase 1: Evita gli oggetti cadenti
+
+- Usa la barra spaziatrice per iniziare il gioco.
+- Muovi il pannello orizzontalmente con le frecce sinistra e destra.
+- Evita i fulmini che cadono e accumula il punteggio.
+- Il gioco termina dopo un determinato periodo di tempo.
+
+## Fase 2: Rispondi alle domande del quiz
+
+- Rispondi alle domande del quiz scegliendo tra le opzioni Vero e Falso.
+- Accumula punti rispondendo correttamente.
+- Il gioco termina dopo aver risposto a tutte le domande.
+
+Buon divertimento!
+# Autori
+
+- [Tommaso Vaccari](https://github.com/T-vaccari)
+
+
 

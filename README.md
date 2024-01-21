@@ -25,10 +25,10 @@ python3 MissionEnvironment.py
 
 ## Phase 1: Collect Falling Objects
 
--Use the space bar to start the game.
--Move the panel horizontally with the left and right arrow keys.
--Collect falling lightning and accumulate points.
--The game ends after 60 seconds.
+- Use the space bar to start the game.
+- Move the panel horizontally with the left and right arrow keys.
+- Collect falling lightning and accumulate points.
+- The game ends after 60 seconds.
 
 ## Phase 2: Answer Quiz Questions
 

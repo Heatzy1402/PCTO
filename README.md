@@ -2,40 +2,42 @@
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/T-vaccari/MissionEnvironment) ![GitHub contributors](https://img.shields.io/github/contributors/T-vaccari/MissionEnvironment) ![GitHub license](https://img.shields.io/github/license/T-vaccari/MissionEnvironment)
 
-Questo progetto è un minigioco sviluppato in Python utilizzando la libreria pygame. Include due giochi diversi in un'ambientazione accattivante: un gioco di evitamento di oggetti cadenti e un quiz a risposta multipla. Il progetto è stato sviluppato come parte di un contest accademico.
+This project is a Python mini-game developed using the pygame library. It includes two different games: a mini-game where you need to collect falling objects and a multiple-choice quiz. The project was developed as part of an academic contest.
 
-## Prerequisiti
+## Prerequisites
 
-Prima di eseguire il gioco, assicurati di avere Python installato nel tuo sistema. Puoi scaricarlo da [python.org](https://www.python.org/).
+Before running the game, make sure you have Python installed on your system. You can download it from [python.org](https://www.python.org/).
 
 ```bash
 pip install pygame
 ```
-## Istruzioni
 
-Per giocare al minigioco, esegui il seguente comando nel terminale:
+
+## Instructions
+
+To play the mini-game, run the following command in the terminal:
 
 ```bash
 python3 MissionEnvironment.py
 ```
 
-# Istruzioni del Minigioco
+# Mini-Game Instructions
 
-## Fase 1: Evita gli oggetti cadenti
+## Phase 1: Collect Falling Objects
 
-- Usa la barra spaziatrice per iniziare il gioco.
-- Muovi il pannello orizzontalmente con le frecce sinistra e destra.
-- Evita i fulmini che cadono e accumula il punteggio.
-- Il gioco termina dopo un determinato periodo di tempo.
+-Use the space bar to start the game.
+-Move the panel horizontally with the left and right arrow keys.
+-Collect falling lightning and accumulate points.
+-The game ends after 60 seconds.
 
-## Fase 2: Rispondi alle domande del quiz
+## Phase 2: Answer Quiz Questions
 
-- Rispondi alle domande del quiz scegliendo tra le opzioni Vero e Falso.
-- Accumula punti rispondendo correttamente.
-- Il gioco termina dopo aver risposto a tutte le domande.
+- Answer quiz questions by choosing between True and False options.
+- Accumulate points by answering correctly.
+- The game ends after responding to all questions.
 
-Buon divertimento!
-# Autori
+Enjoy the adventure!
+# Authors
 
 - [Tommaso Vaccari](https://github.com/T-vaccari)
 

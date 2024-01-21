@@ -1,6 +1,6 @@
 # Mission Environment
 
-![GitHub repo size](https://img.shields.io/github/repo-size/T-vaccari/MissioneEnvironment) 
+![GitHub repo size](https://img.shields.io/github/repo-size/T-vaccari/MissionEnvironment) 
 
 Questo progetto è un minigioco sviluppato in Python utilizzando la libreria pygame. Include due giochi diversi in un'ambientazione accattivante: un gioco di evitamento di oggetti cadenti e un quiz a risposta multipla. Il progetto è stato sviluppato come parte di un contest accademico.
 

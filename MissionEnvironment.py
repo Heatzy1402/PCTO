@@ -116,9 +116,16 @@ def gioco_2(WIDTH, HEIGHT, punteggio_tot):
     running, gover, fine_gioco = True, False, False
     score, current_question = 0, 0
     questions = [
-        "Esistono pannelli fotovoltaici che funzionano anche di notte",
-        "Pannello fotovoltaico e solare sono la stessa cosa",
-        "Un pannello fotovoltaico dura in media 25 anni.",
+       "Esistono pannelli fotovoltaici che funzionano anche di notte", 
+       "Pannello fotovoltaico e solare sono la stessa cosa", 
+       "Un pannello fotovoltaico dura in media 25 anni.",
+       "Il sole emette 5,2 x 10^24 Kilocalorie/Minuto",
+       "L'energia solare ci giunge sotto forma di onde acustiche",
+       "L'energia solare ci giunge sotto forma di onde corte",
+       "Radiazione globale e' sinonimo di radiazione effettiva",
+       "L'albedo e' il rapporto tra l'energia riflessa e l'energia totale in arrivo",
+       "L'effetto serra c'e' sempre stato","La cella di Hudley e' in espansione",
+       "L'equatore termico corrisponde all'equatore geografico"
         
     ]
     correct_answers = [True, False, True, True, False, True, False, True, True, True, False]

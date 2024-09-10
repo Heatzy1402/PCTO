@@ -317,13 +317,7 @@ def gioco_2(WIDTH,HEIGTH,punteggio_tot) :
 
 
 
-#def new_func5(star_x):
- #   star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
- #   return star
 
-#def new_func4():
- #   star_x = random.randint(0, WIDTH - STAR_WIDTH)
- #   return star_x
 
 def tasti():
     keys = pygame.key.get_pressed()

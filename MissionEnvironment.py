@@ -1,392 +1,249 @@
-import pygame   #Libreria necessaria per lo sviluppo di videogiochi su python
+import pygame
 import time
 import random
 
-#-*- coding: utf-8 -*-   
+# Initialize Pygame modules
+pygame.font.init()
+pygame.init()
 
-pygame.font.init() #Funzione del modulo pygame che si occuppa di inizializzare il sottosistema di rendering
-pygame.init() #Funzione del modulo pygame che si occupa di inizializzare vari sottosistemi(grafica,input,audio)
-infoObject = pygame.display.Info()
-
-WIDTH =  infoObject.current_w  #Prelevo le informazioni relative alla larghezza e altezza del monitor dell'utente
-HEIGHT =  infoObject.current_h- 100  #E' necessario ridurre l'altezza della finestra per mostrare a schermo anche le scorciatoie di finestra(chiusura,ridimensionamento,minimizzazione)
-WIN = pygame.display.set_mode((WIDTH, HEIGHT)) #Asseggno alla variabile WIN la finestra di gioco con i parametri di altezza e larghezza del monitor 
+# Screen settings
+info_object = pygame.display.Info()
+WIDTH = info_object.current_w
+HEIGHT = info_object.current_h - 100  # Adjust to leave space for window controls
+WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mission Environment")
 
-elapsed_time=0 #Inizializzo la variabile tempo trascorso
-punteggio_tot=0 #Inizializzo il punteggio inziale
+# Colors
+SKY_BLUE = (135, 206, 235)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+BLACK = (0, 0, 0)
 
-SKY_BLUE = (135, 206, 235) #Assegno a diverse variabili i preset(RGB) per avere determinati colori
-WHITE = (255, 255, 255)    
-GREEN = (0, 255, 0)    
-RED = (255, 0, 0)    
-BLACK= (0,0,0) 
-FONT = pygame.font.SysFont("comicsans", 30)  #Assegno il font alla variabile FONT
+# Fonts
+FONT = pygame.font.SysFont("comicsans", 30)
 
-
-PLAYER_WIDTH = 160   #Variabili dimensioni del player e dei lampi
+# Player settings
+PLAYER_WIDTH = 160
 PLAYER_HEIGHT = 180
 PLAYER_VEL = 7
+
+# Star (Falling Object) settings
 STAR_WIDTH = 100
 STAR_HEIGHT = 90
 STAR_VEL = 3
 
-cartella_immagini="Immagini/"
+# Asset folder
+IMAGE_FOLDER = "Immagini/"
 
-sfondo_no_omino = pygame.transform.scale(pygame.image.load(cartella_immagini+"no_omino.jpg"), (WIDTH+100, HEIGHT+100))    #Variabili contenenti gli elementi grafici
-sfbianco = pygame.transform.scale(pygame.image.load(cartella_immagini+"sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
-fulmine = pygame.transform.scale(pygame.image.load(cartella_immagini+"fulmine.jpeg"), (STAR_WIDTH+100, STAR_HEIGHT+100))
-pannello = pygame.transform.scale(pygame.image.load(cartella_immagini+"pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
-start = pygame.transform.scale(pygame.image.load(cartella_immagini+"schermata_iniziale.jpg"), (WIDTH, HEIGHT))
-sfondo_omino= pygame.transform.scale(pygame.image.load(cartella_immagini+"con_omino.jpg"), (WIDTH, HEIGHT))
-game_over= pygame.transform.scale(pygame.image.load(cartella_immagini+"gameover.png"), (WIDTH, HEIGHT))
-schermata_finale= pygame.transform.scale(pygame.image.load(cartella_immagini+"fine_gioco.png"), (WIDTH, HEIGHT))
+# Load and scale images, with error handling
+def load_image(image_name, width=None, height=None):
+    try:
+        img = pygame.image.load(IMAGE_FOLDER + image_name)
+        if width and height:
+            img = pygame.transform.scale(img, (width, height))
+        return img
+    except pygame.error as e:
+        print(f"Error loading image: {image_name} - {e}")
+        pygame.quit()
 
+# Load assets
+background_no_player = load_image("no_omino.jpg", WIDTH+100, HEIGHT+100)
+background_with_player = load_image("con_omino.jpg", WIDTH, HEIGHT)
+background_white = load_image("sfondo_bianco.jpeg", WIDTH, HEIGHT)
+lightning = load_image("fulmine.jpeg", STAR_WIDTH+100, STAR_HEIGHT+100)
+panel = load_image("pannello.png", PLAYER_WIDTH, PLAYER_HEIGHT)
+start_screen = load_image("schermata_iniziale.jpg", WIDTH, HEIGHT)
+game_over_screen = load_image("gameover.png", WIDTH, HEIGHT)
+final_screen = load_image("fine_gioco.png", WIDTH, HEIGHT)
 
+# Draw the first game screen
+def draw_first_game(player, elapsed_time, stars, points, stop_time, game_started):
+    if game_started:
+        WIN.blit(background_no_player, (0, 0))
+        WIN.blit(panel, (player.x, player.y))
+        time_text = FONT.render(f"Time: {round(elapsed_time)}s", True, WHITE)
+        points_text = FONT.render(f"Points: {round(points)}", True, WHITE)
+        WIN.blit(time_text, (10, 10))
+        WIN.blit(points_text, (WIDTH - 150, 10))
 
-def draw(player, elapsed_time, stars ,point,stop, gamestarter):   #Funzione esterna che si occupa di stampare a schermo il primo gioco
-    if gamestarter == True :  #Se il giocatore preme spacebar il gioco parte e vengono mostrati a schermo il pannello mobile e i fulmini cadenti
-        WIN.blit(sfondo_no_omino, (0, 0)) #Stampo il background
-        WIN.blit(pannello,(player.x,player.y)) #Stampo il pannello mosso dal giocatore
-        time_text = FONT.render(f"Tempo: {round(elapsed_time)}s", 1, "white") 
-        WIN.blit(time_text, (10, 10)) #Stampo il tempo passato a schermo
-        point_text = FONT.render(f"Punti: {round(point)}", 1, "white")
-        WIN.blit(point_text, (WIDTH-150,10)) #Stampo il punteggio a schermo
-        for star in stars:   #Stampo i fulmini nella lista
-            WIN.blit(fulmine,(star.x,star.y))
+        for star in stars:
+            WIN.blit(lightning, (star.x, star.y))
 
-    
-        
-            
-    if elapsed_time > stop : #Se il tempo di gioco finisce si passa ad un'altra schermata
-        WIN.blit(sfondo_omino, (0, 0)) 
-        finish_text = FONT.render(f"Ottimo lavoro hai fatto  {round(point)} punti !", 1, "white")#
-        WIN.blit(finish_text, (20 , HEIGHT/2+150)) #Stampo lo sfondo e il punteggio
-        
-        
-    if gamestarter == False : #Schermata iniziale
-        WIN.blit(start, (0,0)) 
-        
-       
-    pygame.display.flip() #Aggiorno lo schermo
-     
+    if elapsed_time > stop_time:
+        WIN.blit(background_with_player, (0, 0))
+        finish_text = FONT.render(f"Good job, you scored {round(points)} points!", True, WHITE)
+        WIN.blit(finish_text, (20, HEIGHT//2 + 150))
 
-def draw2(questions, current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot): #funzione esterna che si occupa della grafica del secondo gioco
+    if not game_started:
+        WIN.blit(start_screen, (0, 0))
+
+    pygame.display.flip()
+
+# Draw the second game screen
+def draw_second_game(questions, current_question, game_over, false_button, true_button, score, game_finished, total_score):
     WIN.fill(SKY_BLUE)
-    
 
-    
-    if gover == False and current_question<11:  #se il quiz � in esecuzione stampare na determinata schermata
-        pygame.draw.rect(WIN, RED, false_button) #stampa i bottoni vero/falso
+    if not game_over and current_question < 11:
+        pygame.draw.rect(WIN, RED, false_button)
         pygame.draw.rect(WIN, GREEN, true_button)
-        true_text = FONT.render("Vero", True, BLACK) #scrive vero sul bottone e fa centrare la scitta
+        
+        true_text = FONT.render("True", True, BLACK)
         true_rect = true_text.get_rect(center=true_button.center)
         WIN.blit(true_text, true_rect)
-        false_text = FONT.render("Falso", True, BLACK)#scrive falso sul bottone e fa centrare la scritta
+
+        false_text = FONT.render("False", True, BLACK)
         false_rect = false_text.get_rect(center=false_button.center)
         WIN.blit(false_text, false_rect)
-        pygame.draw.rect(WIN, SKY_BLUE, (0, 0, WIDTH, 150))  # Copre la domanda precedente con il colore dello sfondo
-        question_text = FONT.render(questions[current_question], True, BLACK) #stampa la domanda sullo schermo e assegna nelle righe successive la posizione
-        question_rect = question_text.get_rect(center=(WIDTH//2, 100))    
+
+        question_text = FONT.render(questions[current_question], True, BLACK)
+        question_rect = question_text.get_rect(center=(WIDTH // 2, 100))
         WIN.blit(question_text, question_rect)
-        score_text = FONT.render(f"Punteggio {round(score)}  ", 1, "black")#stampa il punteggio
-        WIN.blit(score_text,(0,0))
 
-    if gover == True : #se sei in gameover stampi la schermata gameover
-        
-        WIN.blit(game_over,(0,0))
-        
-        
-    if fine_gioco:
-        punteggio_tot=punteggio_tot+score
-        punteggio = FONT.render(f"Punteggio totale : {round(punteggio_tot)}  ", 1, "black")
-        WIN.blit(schermata_finale,(0,0))
-        WIN.blit(punteggio,(WIDTH/2-75,HEIGHT/2))
-    
+        score_text = FONT.render(f"Score: {round(score)}", True, BLACK)
+        WIN.blit(score_text, (0, 0))
+
+    if game_over:
+        WIN.blit(game_over_screen, (0, 0))
+
+    if game_finished:
+        total_score += score
+        final_score_text = FONT.render(f"Total Score: {round(total_score)}", True, BLACK)
+        WIN.blit(final_screen, (0, 0))
+        WIN.blit(final_score_text, (WIDTH // 2 - 75, HEIGHT // 2))
+
     pygame.display.update()
-   
-    
-def gioco_1(puntegggio_tot): #Funzione che si occupa del primo minigioco
-    elapsed_time=0 #Inizializzo il counter del tempo
-    a=True #Variabili di lavoro
-    gamestarter = False 
+
+# Function for the first game logic
+def game_one(total_score):
+    elapsed_time = 0
+    game_started = False
     run = True
-    vab = True
-    stop = 40 #Variabile che controlla il tempo di gioco
-    star_count=0 #Inizializzo la variabile relativa ai fulmini
-    point = 0 #Inizializzo il punteggio
-    start_time=0 #Inizializzo il tempo in cui il player inizia a giocare
-    stars = [] #Creo la lista che contiene il fulmini
-    clock = time_1() #Assegno alla variabile clock il risultato della funzione  time_1()
-    player = giocatore() #Creo il player attraverso una funzione esterna
-    star_add_increment= 2000 #Variabile che si occupa di gestire il timing del drop dei fulmini
-    
-    
-    
-    
-    
+    player_movement_allowed = True
+    stop_time = 40
+    stars = []
+    clock = pygame.time.Clock()
+    player = create_player()
+    star_add_increment = 2000
+    points = 0
+    star_counter = 0
+    start_time = time.time()
 
-    while run:   #Ciclo del gioco
-        
-        
-        keys = tasti() #Assegno alla variabile keys i tasti premuti
-        
-        
-        for event in pygame.event.get():    #Gestione della chiusura della finestra
-           if event.type == pygame.QUIT :
-              run = False
-              
-              pygame.quit()
-              
-              
-           
-           
-        
-        
-       
-        if gamestarter == True and a==True :    #Controllo del tempo del gioco
-            start_time=time.time() 
-            a=False
+    while run:
+        keys = handle_input()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+
+        if game_started and player_movement_allowed:
+            start_time = time.time()
+            player_movement_allowed = False
+
         elapsed_time = time.time() - start_time
-        
 
-        if (elapsed_time>stop+15 and gamestarter == True) or keys[pygame.K_ESCAPE]: #Se il gioco e' terminato passo al secondo gioco, il tasto escape e' stato messo per facilitare la fase di debug
-            pygame.time.delay(10) #Aggiungo del delay
-            run= False #Fermo il ciclo
-            return   #Esco dalla funzione
+        if elapsed_time > stop_time + 15 or keys[pygame.K_ESCAPE]:
+            run = False
+            return
 
+        star_counter += clock.tick(60)
+        elapsed_time = time.time() - start_time
 
-        
-        star_count += clock.tick(60) #Gestisco il valore della variabili dei fulmini attraverso il clock del computer
-        elapsed_time = time.time() - start_time #Calcolo il tempo trascorso
-        if star_count > star_add_increment: #Stampo fulmini dopo un numero di tick
-                for _ in range(3): #Creo una posizione random dove stampare i fulmini
-                    star_x = random.randint(0, WIDTH - STAR_WIDTH)
-                    star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
-                    stars.append(star)                   
-                
+        if star_counter > star_add_increment:
+            for _ in range(3):
+                star_x = random.randint(0, WIDTH - STAR_WIDTH)
+                star = pygame.Rect(star_x, -STAR_HEIGHT, STAR_WIDTH, STAR_HEIGHT)
+                stars.append(star)
 
-                star_add_increment = max(1200, star_add_increment - 50) #Modifico il valore con cui vengono stampati i fulmini 
-                star_count = 0
-        
-                
-                
-               
-            
-        if keys[pygame.K_SPACE] and vab == True :    #Inizio del gioco dopo aver premuto spacebar         
-           gamestarter = True
-           vab = False  
-        
-        
-        
-        
-        
+            star_add_increment = max(1200, star_add_increment - 50)
+            star_counter = 0
 
-        
-        if  gamestarter == True and elapsed_time < stop:    #Meccanismo del gioco
-            for star in stars[:]: #Per ogni fulmine nella lista regolo la meccanica di gioco
-                star.y += STAR_VEL #Incremento la sua y
-                if star.y > HEIGHT-50: #Se arriva a fondo schermo la rimuovo
+        if keys[pygame.K_SPACE] and player_movement_allowed:
+            game_started = True
+            player_movement_allowed = False
+
+        if game_started and elapsed_time < stop_time:
+            for star in stars[:]:
+                star.y += STAR_VEL
+                if star.y > HEIGHT - 50:
                     stars.remove(star)
-                elif  star.colliderect(player) : #Se entra in collisione con il player la rimuovo dalla lista
+                elif star.colliderect(player):
                     stars.remove(star)
-                    point=point+1 #Incremento il punteggio
-                    punteggio_tot=point
-            keys = tasti()
-            if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:  #Regolo il movimento del giocatore verso sinistra senza farlo uscire dallo schermo
-                player.x -= PLAYER_VEL
-            if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH: #Regolo il movimento del giocatore verso destra senza farlo uscire dallo schermo
-                player.x += PLAYER_VEL
-        
+                    points += 1
+                    total_score = points
 
+            move_player(keys, player)
 
+        draw_first_game(player, elapsed_time, stars, points, stop_time, game_started)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        draw(player, elapsed_time, stars, point,stop, gamestarter) #Chiamo la funzione che si occupa  di stampare a schermo il primo gioco
-    
-
-def gioco_2(WIDTH,HEIGTH,punteggio_tot) : 
-
-    
-
-
-
-
-
-    #inizializzo le variabili booleane di esecuzione
-    fine_gioco= False
+# Function for the second game logic
+def game_two(total_score):
+    questions = [
+        "Do solar panels work at night?",
+        "Are photovoltaic and solar panels the same?",
+        "Does a photovoltaic panel last around 25 years?",
+        "Does the sun emit 5.2 x 10^24 Kilocalories/Minute?",
+        # Add more questions as needed
+    ]
+    correct_answers = [True, False, True, True]
+    game_finished = False
     running = True
-    gover = False
+    game_over = False
     score = 0
     current_question = 0
 
-    #array con le domande e le corrispettive risposte corrette
-    
+    false_button = pygame.Rect(WIDTH * (2 / 3), 200, 100, 50)
+    true_button = pygame.Rect(WIDTH * (1 / 3), 200, 100, 50)
 
-    questions = ["Esistono pannelli fotovoltaici che funzionano anche di notte", "Pannello fotovoltaico e solare sono la stessa cosa", "Un pannello fotovoltaico dura in media 25 anni.","Il sole emette 5,2 x 10^24 Kilocalorie/Minuto","L'energia solare ci giunge sotto forma di onde acustiche","L'energia solare ci giunge sotto forma di onde corte","Radiazione globale e' sinonimo di radiazione effettiva","L'albedo e' il rapporto tra l'energia riflessa e l'energia totale in arrivo","L'effetto serra c'e' sempre stato","La cella di Hudley e' in espansione","L'equatore termico corrisponde all'equatore geografico"]
-    correct_answers = [True, False, True,True,False,True,False,True,True,True,False]
-
-    false_button = pygame.Rect(WIDTH*(2/3), 200, 100, 50)
-    true_button = pygame.Rect(WIDTH*(1/3), 200, 100, 50)
-    
-    
-    
-    
-    
-    
-
-    
-    
-
-
-    while running:#quando il gioco � in esecuzione 
-        if not fine_gioco:
-            for event in pygame.event.get(): #per ogni evento che accade in esecuzione
+    while running:
+        if not game_finished:
+            for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:#se si preme con il mouse nell'area delimitata dai rettangoli per le risposte
+                if event.type == pygame.MOUSEBUTTONDOWN:
                     if true_button.collidepoint(event.pos):
-                        if correct_answers[current_question]: #e la risposta data coincide � ccon l'array delle risposte corrette assegni 1pt altrimenti ne sottrai uno
-                            score+=1
-                            current_question+=1
+                        if correct_answers[current_question]:
+                            score += 1
                         else:
-                            score-=1
-                            current_question+=1
+                            score -= 1
+                        current_question += 1
                     if false_button.collidepoint(event.pos):
                         if not correct_answers[current_question]:
-                            score+=1
-                            current_question+=1
+                            score += 1
                         else:
-                            score-=1
-                            current_question+=1
-        for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False       
-        if score<-3 :
-            gover = True
-        if current_question>10:
-           fine_gioco = True 
-            
-        draw2(questions,current_question,gover,false_button,true_button,score,fine_gioco,punteggio_tot)
-        
-        
-        
-            
-            
-    pygame.quit() 
+                            score -= 1
+                        current_question += 1
 
+        if score < -3:
+            game_over = True
+        if current_question >= len(questions):
+            game_finished = True
 
+        draw_second_game(questions, current_question, game_over, false_button, true_button, score, game_finished, total_score)
 
+    pygame.quit()
 
+# Utility functions
+def handle_input():
+    return pygame.key.get_pressed()
 
-    
+def create_player():
+    return pygame.Rect(200, HEIGHT - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT)
 
+def move_player(keys, player):
+    if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
+        player.x -= PLAYER_VEL
+    if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
+        player.x += PLAYER_VEL
 
-
-    
-        
-        
-   
-
-        
-  
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-#def new_func5(star_x):
- #   star = pygame.Rect(star_x, -STAR_HEIGHT,STAR_WIDTH, STAR_HEIGHT)
- #   return star
-
-#def new_func4():
- #   star_x = random.randint(0, WIDTH - STAR_WIDTH)
- #   return star_x
-
-def tasti():
-    keys = pygame.key.get_pressed()
-    return keys
-
-def time_1():
-    clock = pygame.time.Clock()
-    return clock
-
-def giocatore():
-    player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT,PLAYER_WIDTH, PLAYER_HEIGHT)
-    return player
-
-def main(WIDTH,HEIGHT,punteggio_tot):
-    
-    gioco_1(punteggio_tot)
-    gioco_2(WIDTH,HEIGHT,punteggio_tot)
+# Main game function
+def main(total_score=0):
+    game_one(total_score)
+    game_two(total_score)
 
 if __name__ == "__main__":
-    main(WIDTH,HEIGHT,punteggio_tot)   
-
-
-
-    
-    
-
-    
-   
-   
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    main()
 
  
 

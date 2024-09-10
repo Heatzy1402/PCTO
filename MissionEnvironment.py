@@ -151,8 +151,12 @@ def gioco_2(WIDTH, HEIGHT, punteggio_tot):
                         current_question += 1
         if score < -3:
             gover = True
+
         if current_question > 10:
             fine_gioco = True
+        
+        
+
 
         draw2(questions, current_question, gover, false_button, true_button, score, fine_gioco, punteggio_tot)
     pygame.quit()

@@ -2,202 +2,130 @@ import pygame
 import time
 import random
 
-# Initialize Pygame modules
+# Initialize Pygame and its subsystems
 pygame.font.init()
 pygame.init()
 
-# Screen settings
-info_object = pygame.display.Info()
-WIDTH = info_object.current_w
-HEIGHT = info_object.current_h - 100  # Adjust to leave space for window controls
+# Get user screen dimensions and define game window
+infoObject = pygame.display.Info()
+WIDTH, HEIGHT = infoObject.current_w, infoObject.current_h - 100
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Mission Environment")
 
-# Colors
-SKY_BLUE = (135, 206, 235)
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-BLACK = (0, 0, 0)
-
-# Fonts
+# Initialize variables
+elapsed_time = 0
+punteggio_tot = 0
+SKY_BLUE, WHITE, GREEN, RED, BLACK = (135, 206, 235), (255, 255, 255), (0, 255, 0), (255, 0, 0), (0, 0, 0)
 FONT = pygame.font.SysFont("comicsans", 30)
 
-# Player settings
-PLAYER_WIDTH = 160
-PLAYER_HEIGHT = 180
-PLAYER_VEL = 7
+# Player and star constants
+PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_VEL = 160, 180, 7
+STAR_WIDTH, STAR_HEIGHT, STAR_VEL = 100, 90, 3
 
-# Star (Falling Object) settings
-STAR_WIDTH = 100
-STAR_HEIGHT = 90
-STAR_VEL = 3
+# Load images and scale them
+image_folder = "Immagini/"
+sfondo_no_omino = pygame.transform.scale(pygame.image.load(image_folder + "no_omino.jpg"), (WIDTH + 100, HEIGHT + 100))
+sfbianco = pygame.transform.scale(pygame.image.load(image_folder + "sfondo_bianco.jpeg"), (WIDTH, HEIGHT))
+fulmine = pygame.transform.scale(pygame.image.load(image_folder + "fulmine.jpeg"), (STAR_WIDTH + 100, STAR_HEIGHT + 100))
+pannello = pygame.transform.scale(pygame.image.load(image_folder + "pannello.png"), (PLAYER_WIDTH, PLAYER_HEIGHT))
+start = pygame.transform.scale(pygame.image.load(image_folder + "schermata_iniziale.jpg"), (WIDTH, HEIGHT))
+sfondo_omino = pygame.transform.scale(pygame.image.load(image_folder + "con_omino.jpg"), (WIDTH, HEIGHT))
+game_over = pygame.transform.scale(pygame.image.load(image_folder + "gameover.png"), (WIDTH, HEIGHT))
+schermata_finale = pygame.transform.scale(pygame.image.load(image_folder + "fine_gioco.png"), (WIDTH, HEIGHT))
 
-# Asset folder
-IMAGE_FOLDER = "Immagini/"
-
-# Load and scale images, with error handling
-def load_image(image_name, width=None, height=None):
-    try:
-        img = pygame.image.load(IMAGE_FOLDER + image_name)
-        if width and height:
-            img = pygame.transform.scale(img, (width, height))
-        return img
-    except pygame.error as e:
-        print(f"Error loading image: {image_name} - {e}")
-        pygame.quit()
-
-# Load assets
-background_no_player = load_image("no_omino.jpg", WIDTH+100, HEIGHT+100)
-background_with_player = load_image("con_omino.jpg", WIDTH, HEIGHT)
-background_white = load_image("sfondo_bianco.jpeg", WIDTH, HEIGHT)
-lightning = load_image("fulmine.jpeg", STAR_WIDTH+100, STAR_HEIGHT+100)
-panel = load_image("pannello.png", PLAYER_WIDTH, PLAYER_HEIGHT)
-start_screen = load_image("schermata_iniziale.jpg", WIDTH, HEIGHT)
-game_over_screen = load_image("gameover.png", WIDTH, HEIGHT)
-final_screen = load_image("fine_gioco.png", WIDTH, HEIGHT)
-
-# Draw the first game screen
-def draw_first_game(player, elapsed_time, stars, points, stop_time, game_started):
-    if game_started:
-        WIN.blit(background_no_player, (0, 0))
-        WIN.blit(panel, (player.x, player.y))
-        time_text = FONT.render(f"Time: {round(elapsed_time)}s", True, WHITE)
-        points_text = FONT.render(f"Points: {round(points)}", True, WHITE)
-        WIN.blit(time_text, (10, 10))
-        WIN.blit(points_text, (WIDTH - 150, 10))
-
+def draw(player, elapsed_time, stars, point, stop, gamestarter):
+    if gamestarter:
+        WIN.blit(sfondo_no_omino, (0, 0))
+        WIN.blit(pannello, (player.x, player.y))
+        WIN.blit(FONT.render(f"Tempo: {round(elapsed_time)}s", 1, WHITE), (10, 10))
+        WIN.blit(FONT.render(f"Punti: {round(point)}", 1, WHITE), (WIDTH - 150, 10))
         for star in stars:
-            WIN.blit(lightning, (star.x, star.y))
-
-    if elapsed_time > stop_time:
-        WIN.blit(background_with_player, (0, 0))
-        finish_text = FONT.render(f"Good job, you scored {round(points)} points!", True, WHITE)
-        WIN.blit(finish_text, (20, HEIGHT//2 + 150))
-
-    if not game_started:
-        WIN.blit(start_screen, (0, 0))
-
+            WIN.blit(fulmine, (star.x, star.y))
+    elif elapsed_time > stop:
+        WIN.blit(sfondo_omino, (0, 0))
+        WIN.blit(FONT.render(f"Ottimo lavoro, hai fatto {round(point)} punti!", 1, WHITE), (20, HEIGHT / 2 + 150))
+    else:
+        WIN.blit(start, (0, 0))
     pygame.display.flip()
 
-# Draw the second game screen
-def draw_second_game(questions, current_question, game_over, false_button, true_button, score, game_finished, total_score):
+def draw2(questions, current_question, gover, false_button, true_button, score, fine_gioco, punteggio_tot):
     WIN.fill(SKY_BLUE)
-
-    if not game_over and current_question < 11:
+    if not gover and current_question < 11:
         pygame.draw.rect(WIN, RED, false_button)
         pygame.draw.rect(WIN, GREEN, true_button)
-        
-        true_text = FONT.render("True", True, BLACK)
-        true_rect = true_text.get_rect(center=true_button.center)
-        WIN.blit(true_text, true_rect)
-
-        false_text = FONT.render("False", True, BLACK)
-        false_rect = false_text.get_rect(center=false_button.center)
-        WIN.blit(false_text, false_rect)
-
-        question_text = FONT.render(questions[current_question], True, BLACK)
-        question_rect = question_text.get_rect(center=(WIDTH // 2, 100))
-        WIN.blit(question_text, question_rect)
-
-        score_text = FONT.render(f"Score: {round(score)}", True, BLACK)
-        WIN.blit(score_text, (0, 0))
-
-    if game_over:
-        WIN.blit(game_over_screen, (0, 0))
-
-    if game_finished:
-        total_score += score
-        final_score_text = FONT.render(f"Total Score: {round(total_score)}", True, BLACK)
-        WIN.blit(final_screen, (0, 0))
-        WIN.blit(final_score_text, (WIDTH // 2 - 75, HEIGHT // 2))
-
+        WIN.blit(FONT.render("Vero", True, BLACK), FONT.render("Vero", True, BLACK).get_rect(center=true_button.center))
+        WIN.blit(FONT.render("Falso", True, BLACK), FONT.render("Falso", True, BLACK).get_rect(center=false_button.center))
+        WIN.blit(FONT.render(questions[current_question], True, BLACK), FONT.render(questions[current_question], True, BLACK).get_rect(center=(WIDTH // 2, 100)))
+        WIN.blit(FONT.render(f"Punteggio {round(score)}", 1, BLACK), (0, 0))
+    elif gover:
+        WIN.blit(game_over, (0, 0))
+    if fine_gioco:
+        punteggio_tot += score
+        WIN.blit(schermata_finale, (0, 0))
+        WIN.blit(FONT.render(f"Punteggio totale: {round(punteggio_tot)}", 1, BLACK), (WIDTH / 2 - 75, HEIGHT / 2))
     pygame.display.update()
 
-# Function for the first game logic
-def game_one(total_score):
-    elapsed_time = 0
-    game_started = False
-    run = True
-    player_movement_allowed = True
-    stop_time = 40
+def gioco_1(punteggio_tot):
+    elapsed_time, stop, point, star_count, star_add_increment = 0, 40, 0, 0, 2000
+    a, gamestarter, vab, run = True, False, True, True
+    player = pygame.Rect(200, HEIGHT - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT)
     stars = []
     clock = pygame.time.Clock()
-    player = create_player()
-    star_add_increment = 2000
-    points = 0
-    star_counter = 0
     start_time = time.time()
-
     while run:
-        keys = handle_input()
-
+        keys = pygame.key.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
 
-        if game_started and player_movement_allowed:
+        if gamestarter and a:
             start_time = time.time()
-            player_movement_allowed = False
-
+            a = False
         elapsed_time = time.time() - start_time
 
-        if elapsed_time > stop_time + 15 or keys[pygame.K_ESCAPE]:
-            run = False
+        if elapsed_time > stop + 15 or keys[pygame.K_ESCAPE]:
+            pygame.time.delay(10)
             return
 
-        star_counter += clock.tick(60)
-        elapsed_time = time.time() - start_time
-
-        if star_counter > star_add_increment:
-            for _ in range(3):
-                star_x = random.randint(0, WIDTH - STAR_WIDTH)
-                star = pygame.Rect(star_x, -STAR_HEIGHT, STAR_WIDTH, STAR_HEIGHT)
-                stars.append(star)
-
+        star_count += clock.tick(60)
+        if star_count > star_add_increment:
+            stars.extend([pygame.Rect(random.randint(0, WIDTH - STAR_WIDTH), -STAR_HEIGHT, STAR_WIDTH, STAR_HEIGHT) for _ in range(3)])
             star_add_increment = max(1200, star_add_increment - 50)
-            star_counter = 0
+            star_count = 0
 
-        if keys[pygame.K_SPACE] and player_movement_allowed:
-            game_started = True
-            player_movement_allowed = False
+        if keys[pygame.K_SPACE] and vab:
+            gamestarter, vab = True, False
 
-        if game_started and elapsed_time < stop_time:
+        if gamestarter and elapsed_time < stop:
             for star in stars[:]:
                 star.y += STAR_VEL
                 if star.y > HEIGHT - 50:
                     stars.remove(star)
                 elif star.colliderect(player):
                     stars.remove(star)
-                    points += 1
-                    total_score = points
+                    point += 1
+            if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
+                player.x -= PLAYER_VEL
+            if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
+                player.x += PLAYER_VEL
 
-            move_player(keys, player)
+        draw(player, elapsed_time, stars, point, stop, gamestarter)
 
-        draw_first_game(player, elapsed_time, stars, points, stop_time, game_started)
-
-# Function for the second game logic
-def game_two(total_score):
+def gioco_2(WIDTH, HEIGHT, punteggio_tot):
+    running, gover, fine_gioco = True, False, False
+    score, current_question = 0, 0
     questions = [
-        "Do solar panels work at night?",
-        "Are photovoltaic and solar panels the same?",
-        "Does a photovoltaic panel last around 25 years?",
-        "Does the sun emit 5.2 x 10^24 Kilocalories/Minute?",
-        # Add more questions as needed
+        "Esistono pannelli fotovoltaici che funzionano anche di notte",
+        "Pannello fotovoltaico e solare sono la stessa cosa",
+        "Un pannello fotovoltaico dura in media 25 anni.",
+        
     ]
-    correct_answers = [True, False, True, True]
-    game_finished = False
-    running = True
-    game_over = False
-    score = 0
-    current_question = 0
-
-    false_button = pygame.Rect(WIDTH * (2 / 3), 200, 100, 50)
-    true_button = pygame.Rect(WIDTH * (1 / 3), 200, 100, 50)
+    correct_answers = [True, False, True, True, False, True, False, True, True, True, False]
+    false_button, true_button = pygame.Rect(WIDTH * (2 / 3), 200, 100, 50), pygame.Rect(WIDTH * (1 / 3), 200, 100, 50)
 
     while running:
-        if not game_finished:
+        if not fine_gioco:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -214,36 +142,20 @@ def game_two(total_score):
                         else:
                             score -= 1
                         current_question += 1
-
         if score < -3:
-            game_over = True
-        if current_question >= len(questions):
-            game_finished = True
+            gover = True
+        if current_question > 10:
+            fine_gioco = True
 
-        draw_second_game(questions, current_question, game_over, false_button, true_button, score, game_finished, total_score)
-
+        draw2(questions, current_question, gover, false_button, true_button, score, fine_gioco, punteggio_tot)
     pygame.quit()
 
-# Utility functions
-def handle_input():
-    return pygame.key.get_pressed()
-
-def create_player():
-    return pygame.Rect(200, HEIGHT - PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT)
-
-def move_player(keys, player):
-    if keys[pygame.K_LEFT] and player.x - PLAYER_VEL >= 0:
-        player.x -= PLAYER_VEL
-    if keys[pygame.K_RIGHT] and player.x + PLAYER_VEL + player.width <= WIDTH:
-        player.x += PLAYER_VEL
-
-# Main game function
-def main(total_score=0):
-    game_one(total_score)
-    game_two(total_score)
+def main(WIDTH, HEIGHT, punteggio_tot):
+    gioco_1(punteggio_tot)
+    gioco_2(WIDTH, HEIGHT, punteggio_tot)
 
 if __name__ == "__main__":
-    main()
+    main(WIDTH, HEIGHT, punteggio_tot)
 
  
 
